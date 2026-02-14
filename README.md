@@ -50,7 +50,7 @@ ensure [my_scripts]
 | [**mysql-async**](https://github.com/brouznouf/fivem-mysql-async) | [@brouznouf](https://github.com/brouznouf) | `Standalone` | `Free` |
 | [**ghmattimysql**](https://github.com/vecchiotom/ghmattimysql) | [@vecchiotom](https://github.com/vecchiotom) | `Standalone` | `Free` |
 
-## Supported Interaction Systems (External)
+## Interaction Systems (External)
 | Resource | Author / Maintainer | Compatibility | Price |
 | :--- | :--- | :--- | :--- |
 | [**ox_target**](https://github.com/CommunityOx/ox_target) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
