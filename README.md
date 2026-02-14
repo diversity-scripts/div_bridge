@@ -2,10 +2,10 @@
 A high-performance, standardized dependency library designed to unify the FiveM development ecosystem. By bridging the gap between major frameworks (ESX, QBCore), inventory systems (ox, QS, Core) and other resources, it provides a consistent API that allows developers to write code once and deploy it anywhere.
 
 ## 🌟 Features
-- **Framework Agnostic:** Seamlessly auto-detects ESX or QBCore environments on startup with zero configuration required.
-- **Inventory Integration:** Out-of-the-box support for ox_inventory, qs-inventory, and native framework systems.
+- **Framework Agnostic:** Seamlessly auto-detects frameworks (e.g.: ESX, QBCore) environments on startup with zero configuration required.
+- **Inventory Integration:** Out-of-the-box support for inventories (e.g.: ox_inventory, qb-inventory), and native framework systems.
 - **Optimized Performance:** Built on a Singleton Pattern to minimize memory overhead and eliminate redundant logic across your resources.
-- **Smart Notifications:** Automatically routes alerts through ox_lib (if available) or other supported resource, falling back to native GTA V notifications otherwise.
+- **Smart Notifications:** Automatically routes alerts through supported resources, falling back to native GTA V notifications otherwise.
 
 ## 🛠️ Installation
 1. Download the latest release of `div_bridge` resource.
@@ -19,46 +19,61 @@ ensure [my_scripts]
 ```
 
 ## Supported Frameworks
-- [ESX](https://github.com/esx-framework/esx_core)
-- [QBCore](https://github.com/qbcore-framework/qb-core)
-- [Qbox](https://github.com/Qbox-project/qbx_core)
-- [ox_core](https://github.com/CommunityOx/ox_core)
-- [TMC](https://store.tmc.bj/category/frameworks)
+| Resource | Author / Maintainer | Price |
+| :--- | :--- | :--- |
+| [**ESX**](https://github.com/esx-framework/esx_core) | [@ESX](https://github.com/esx-framework) | `Free` |
+| [**QBCore**](https://github.com/qbcore-framework/qb-core) | [@QBCore](https://github.com/qbcore-framework) | `Free` |
+| [**Qbox**](https://github.com/Qbox-project/qbx_core) | [@Qbox Project](https://github.com/Qbox-project) | `Free` |
+| [**ox_core**](https://github.com/CommunityOx/ox_core) | [@CommunityOx](https://github.com/CommunityOx) | `Free` |
+| [**ND_Core**](https://github.com/ND-Framework/ND_Core) | [@ND Framework](https://github.com/ND-Framework) | `Free` |
+| [**TMC**](https://store.tmc.bj/category/frameworks) | [@The Modding Collective](https://store.tmc.bj) | `Paid` |
 
 ## Supported Inventories
-- [ox_inventory](https://github.com/CommunityOx/ox_inventory)
-- [tgiann-inventory](https://tgiann.com/package/6273000)
-- ak47_inventory
-- codem-inventory
-- core_inventory
-- ps-inventory
-- [qs-inventory](https://www.quasar-store.com/scripts/advancedinventory)
-- origen_inventory
-- chezza
-> All framework integrated inventories are also supported.
+| Resource | Author / Maintainer | Compatibility | Price |
+| :--- | :--- | :--- | :--- |
+| [**ox_inventory**](https://github.com/CommunityOx/ox_inventory) | [@CommunityOx](https://github.com/CommunityOx) | `ESX / QB / ox_core / ND_Core` | `Free` |
+| [**qs-inventory**](https://www.quasar-store.com/scripts/advancedinventory) | [@Quasar](https://www.quasar-store.com) | `ESX / QB / Qbox` | `Paid` |
+| [**origen_inventory**](https://www.origennetwork.store/package/5881161) | [@Origen Network](https://www.origennetwork.store) | `ESX / QB` | `Paid` |
+| [**tgiann-inventory**](https://tgiann.com/package/6273000) | [@Tgiann](https://www.tgiann.com) | `ESX / QB` | `Paid` |
+| [**codem-inventory**](https://codem.tebex.io/package/5900973) | [@CodeM](https://codem.tebex.io) | `ESX / QB` | `Paid` |
+| [**core_inventory**](https://core.tebex.io/package/5123274) | [@Core](https://core.tebex.io) | `ESX` | `Paid` |
+| [**ps-inventory**](https://github.com/Project-Sloth/ps-inventory) | [@Project Sloth](https://github.com/Project-Sloth) | `QB` | `Free` |
+| [**ak47_inventory**](https://menanak47.tebex.io/package/6436604) | [@MenanAK47](https://menanak47.tebex.io) | `ESX / QB` | `Paid` |
+| [**chezza_inventory**](https://chezza.tebex.io/package/4770357) | [@Chezza Studios](https://chezza.tebex.io) | `ESX` | `Paid` |
+> [!TIP]
+> All framework-integrated inventories are also supported.
 
 ## Database Resources
-- [oxmysql](https://github.com/CommunityOx/oxmysql)
-- [mysql-async](https://github.com/brouznouf/fivem-mysql-async)
-- ghmattimysql
+| Resource | Author / Maintainer | Compatibility | Price |
+| :--- | :--- | :--- | :--- |
+| [**oxmysql**](https://github.com/CommunityOx/oxmysql) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
+| [**mysql-async**](https://github.com/brouznouf/fivem-mysql-async) | [@brouznouf](https://github.com/brouznouf) | `Standalone` | `Free` |
+| [**ghmattimysql**](https://github.com/vecchiotom/ghmattimysql) | [@vecchiotom](https://github.com/vecchiotom) | `Standalone` | `Free` |
 
 ## Supported Interaction Systems (External)
-- [ox_target](https://github.com/CommunityOx/ox_target)
-- [qb-target](https://github.com/qbcore-framework/qb-target)
-- [qtarget](https://github.com/overextended/qtarget?tab=readme-ov-file) (deprecated)
-- [bt-target](https://github.com/brentN5/bt-target) (deprecated)
+| Resource | Author / Maintainer | Compatibility | Price |
+| :--- | :--- | :--- | :--- |
+| [**ox_target**](https://github.com/CommunityOx/ox_target) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
+| [**qb-target**](https://github.com/qbcore-framework/qb-target) | [@QBCore](https://github.com/qbcore-framework) | `Standalone` | `Free` |
+| [**qtarget**](https://github.com/overextended/qtarget) *(deprecated)* | [@Overextended](https://github.com/overextended) | `Standalone` | `Free` |
+| [**bt-target**](https://github.com/brentN5/bt-target) *(deprecated)* | [@brentN5](https://github.com/brentN5) | `Standalone` | `Free` |
+| [**core_focus**](https://www.c8re.store/package/6986459) | [@Core](https://core.tebex.io) | `ESX / QB` | `Paid` |
 
 ## Interaction Systems (Internal)
-- 3D text
-- GTA V native hint
+- **3D Text**: World-space coordinate text.
+- **GTA V Native Hint**: Standard top-left help notifications.
 
 ## Notification Systems
-- [ox_lib](https://github.com/CommunityOx/ox_lib)
-- codem-notification
-- okokNotify
-- mythic_notify
-- 17mov_Hud
-> All framework integrated notification systems are also supported.
+| Resource | Author / Maintainer | Compatibility | Price |
+| :--- | :--- | :--- | :--- |
+| [**ox_lib**](https://github.com/CommunityOx/ox_lib) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
+| [**okokNotify**](https://okok.tebex.io/package/4724993) | [@okok Scripts](https://okok.tebex.io) | `Standalone` | `Paid` |
+| [**mythic_notify**](https://github.com/JayMontana36/mythic_notify) | [@JayMontana36](https://github.com/JayMontana36) | `Standalone` | `Free` |
+| [**pNotify**](https://github.com/Nick78111/pNotify) | [@Nick78111](https://github.com/Nick78111) | `Standalone` | `Free` |
+| [**17mov_Hud**](https://17movement.net/scripts/6020650) | [@17 Movement](https://17movement.net) | `Standalone` | `Paid` |
+| [**codem-notification**](https://codem.tebex.io/package/5399171) | [@CodeM](https://codem.tebex.io) | `Standalone` | `Paid` |
+> [!TIP]
+> All framework-integrated notification systems are also supported.
 
 ## 📄 Licensing & Usage
 This library is a dedicated dependency for all our resources.
