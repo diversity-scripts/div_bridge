@@ -48,15 +48,13 @@ ensure [my_scripts]
 | :--- | :--- | :--- | :--- |
 | [**oxmysql**](https://github.com/CommunityOx/oxmysql) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
 | [**mysql-async**](https://github.com/brouznouf/fivem-mysql-async) | [@brouznouf](https://github.com/brouznouf) | `Standalone` | `Free` |
-| [**ghmattimysql**](https://github.com/vecchiotom/ghmattimysql) | [@vecchiotom](https://github.com/vecchiotom) | `Standalone` | `Free` |
+| [**ghmattimysql**](https://github.com/FrazzIe/ghmattimysql) | [@FrazzIe](https://github.com/FrazzIe) | `Standalone` | `Free` |
 
 ## Interaction Systems (External)
 | Resource | Author / Maintainer | Compatibility | Price |
 | :--- | :--- | :--- | :--- |
 | [**ox_target**](https://github.com/CommunityOx/ox_target) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
 | [**qb-target**](https://github.com/qbcore-framework/qb-target) | [@QBCore](https://github.com/qbcore-framework) | `Standalone` | `Free` |
-| [**qtarget**](https://github.com/overextended/qtarget) *(deprecated)* | [@Overextended](https://github.com/overextended) | `Standalone` | `Free` |
-| [**bt-target**](https://github.com/brentN5/bt-target) *(deprecated)* | [@brentN5](https://github.com/brentN5) | `Standalone` | `Free` |
 | [**core_focus**](https://www.c8re.store/package/6986459) | [@Core](https://core.tebex.io) | `ESX / QB` | `Paid` |
 
 ## Interaction Systems (Internal)
