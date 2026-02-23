@@ -18,6 +18,11 @@ ensure div_bridge   # <--- MUST LOAD HERE
 ensure [my_scripts]
 ```
 
+## 🦺 Integration
+1. Ensure `div_bridge` is started before your script.
+2. Add `shared_script "@div_bridge/init.lua"` to your fxmanifest.
+3. Now you can use all the modules in your script.
+
 ## Supported Frameworks
 | Resource | Author / Maintainer | Price |
 | :--- | :--- | :--- |
