@@ -73,6 +73,18 @@ ensure [my_scripts]
 > [!TIP]
 > All framework-integrated notification systems are also supported.
 
+## TextUI Systems
+| Resource | Author / Maintainer | Compatibility | Price |
+| :--- | :--- | :--- | :--- |
+| [**ox_lib**](https://github.com/CommunityOx/ox_lib) | [@CommunityOx](https://github.com/CommunityOx) | `Standalone` | `Free` |
+| [**jg-textui**](https://github.com/jgscripts/jg-textui) | [@jgscripts](https://github.com/jgscripts) | `Standalone` | `Free` |
+| [**okokTextUI**](https://okok.tebex.io/package/6024831) | [@okok Scripts](https://okok.tebex.io) | `Standalone` | `Paid` |
+| [**cd_drawtextui**](https://github.com/dsheedes/cd_drawtextui) | [@dsheedes](https://github.com/dsheedes) | `Standalone` | `Free` |
+| [**codem-textui**](https://codem.tebex.io/package/5984937) | [@CodeM](https://codem.tebex.io) | `Standalone` | `Paid` |
+| [**brutal_textui**](https://store.brutalscripts.com/product/6411668) | [@Brutal Scripts](https://store.brutalscripts.com) | `Standalone` | `Paid` |
+> [!TIP]
+> All framework-integrated textui systems are also supported.
+
 ## 📄 Licensing & Usage
 This library is a dedicated dependency for all our resources.
 - **Permissions:** You are encouraged to view and modify the code to suit your server's specific requirements.
