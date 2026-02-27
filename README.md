@@ -41,10 +41,9 @@ ensure [my_scripts]
 | [**origen_inventory**](https://www.origennetwork.store/package/5881161) | [@Origen Network](https://www.origennetwork.store) | `ESX / QB` | `Paid` |
 | [**tgiann-inventory**](https://tgiann.com/package/6273000) | [@Tgiann](https://www.tgiann.com) | `ESX / QB` | `Paid` |
 | [**codem-inventory**](https://codem.tebex.io/package/5900973) | [@CodeM](https://codem.tebex.io) | `ESX / QB` | `Paid` |
-| [**core_inventory**](https://core.tebex.io/package/5123274) | [@Core](https://core.tebex.io) | `ESX` | `Paid` |
+| [**core_inventory**](https://core.tebex.io/package/5123274) | [@Core](https://core.tebex.io) | `ESX / QB` | `Paid` |
 | [**ps-inventory**](https://github.com/Project-Sloth/ps-inventory) | [@Project Sloth](https://github.com/Project-Sloth) | `QB` | `Free` |
 | [**ak47_inventory**](https://menanak47.tebex.io/package/6436604) | [@MenanAK47](https://menanak47.tebex.io) | `ESX / QB` | `Paid` |
-| [**chezza_inventory**](https://chezza.tebex.io/package/4770357) | [@Chezza Studios](https://chezza.tebex.io) | `ESX` | `Paid` |
 > [!TIP]
 > All framework-integrated inventories are also supported.
 
