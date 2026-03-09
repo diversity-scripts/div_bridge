@@ -101,3 +101,6 @@ We welcome community contributions! If you are a developer looking to enhance `d
 - **Submit** a **Pull Request**.
 
 Our team will review all submissions and merge those that provide significant value to the community.
+
+## 🎗️ Credits
+This project incorporates modified functions from [ox_lib](https://github.com/CommunityOx/ox_lib) by the Overextended Team.
