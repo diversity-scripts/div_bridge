@@ -9,7 +9,7 @@ local function getFramework()
     if GetResourceState('ox_core') == 'started' then return 'ox_core' end
     if GetResourceState('ND_Core') == 'started' then return 'nd_core' end
     if GetResourceState('core') == 'started' then return 'tmc' end
-    return 'custom'
+    return 'standalone'
 end
 
 local function getInventory()
@@ -22,22 +22,41 @@ local function getInventory()
     if GetResourceState('core_inventory') == 'started' then return 'core_inventory' end
     if GetResourceState('ps-inventory') == 'started' then return 'ps-inventory' end
     if GetResourceState('ak47_inventory') == 'started' then return 'ak47_inventory' end
-    if GetResourceState('inventory') == 'started' then return 'chezza_inventory' end
-    return 'custom'
+    return nil
 end
 
 local function getDatabase()
     if GetResourceState('oxmysql') == 'started' then return 'oxmysql' end
     if GetResourceState('mysql-async') == 'started' then return 'mysql-async' end
     if GetResourceState('ghmattimysql') == 'started' and GetResourceState('oxmysql') == 'missing' then return 'ghmattimysql' end
-    return 'custom'
+    return nil
 end
 
 local function getInteraction()
     if GetResourceState('ox_target') == 'started' then return 'ox_target' end
     if GetResourceState('qb-target') == 'started' then return 'qb-target' end
     if GetResourceState('core_focus') == 'started' then return 'core_focus' end
-    return 'custom'
+    return nil
+end
+
+local function getNotification()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    if GetResourceState('okokNotify') == 'started' then return 'okokNotify' end
+    if GetResourceState('mythic_notify') == 'started' then return 'mythic_notify' end
+    if GetResourceState('pNotify') == 'started' then return 'pNotify' end
+    if GetResourceState('17mov_Hud') == 'started' then return '17mov_Hud' end
+    if GetResourceState('codem-notification') == 'started' then return 'codem-notification' end
+    return 'standalone'
+end
+
+local function getTextUI()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    if GetResourceState('jg-textui') == 'started' then return 'jg-textui' end
+    if GetResourceState('okokTextUI') == 'started' then return 'okokTextUI' end
+    if GetResourceState('cd_drawtextui') == 'started' then return 'cd_drawtextui' end
+    if GetResourceState('codem-textui') == 'started' then return 'codem-textui' end
+    if GetResourceState('brutal_textui') == 'started' then return 'brutal_textui' end
+    return 'standalone'
 end
 
 return function(Config)
@@ -45,5 +64,7 @@ return function(Config)
     if Config.Inventory == 'auto' then Config.Inventory = getInventory() end
     if Config.Database == 'auto' then Config.Database = getDatabase() end
     if Config.Interaction == 'auto' then Config.Interaction = getInteraction() end
+    if Config.Notification == 'auto' then Config.Notification = getNotification() end
+    if Config.TextUI == 'auto' then Config.TextUI = getTextUI() end
     return Config
 end

@@ -1,5 +1,8 @@
 local Config = {}
 
+-- Mode for debugging
+Config.Debug = false
+
 -- FRAMEWORK
 ------------------------
 -- Options:
@@ -17,15 +20,16 @@ Config.Framework = 'auto'
 ------------------------
 -- Options:
 -- 'auto'
+-- 'framework'
 -- 'ox_inventory'
+-- 'qb-inventory'
 -- 'qs-inventory'
 -- 'origen_inventory'
--- 'tgiann_inventory'
+-- 'tgiann-inventory'
 -- 'codem-inventory'
 -- 'core_inventory'
 -- 'ps-inventory'
 -- 'ak47_inventory'
--- 'chezza_inventory'
 -- 'custom'
 Config.Inventory = 'auto'
 
@@ -61,14 +65,13 @@ Config.Interaction = 'auto'
 -- 'codem-notification'
 -- 'standalone'
 -- 'custom'
-Config.Notification = 'ox_lib'
+Config.Notification = 'auto'
 
 -- TEXTUI
 ------------------------
 -- Options:
+-- 'framework'
 -- 'ox_lib'
--- 'esx'
--- 'qb'
 -- 'jg-textui'
 -- 'okokTextUI'
 -- 'cd_drawtextui'
@@ -76,6 +79,6 @@ Config.Notification = 'ox_lib'
 -- 'brutal_textui'
 -- 'standalone'
 -- 'custom'
-Config.TextUI = 'ox_lib'
+Config.TextUI = 'auto'
 
 return Config
