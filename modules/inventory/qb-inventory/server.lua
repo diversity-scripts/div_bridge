@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local qb_inventory = exports['qb-inventory']
 local Inventory = {}
 
@@ -75,11 +76,15 @@ Inventory.ClearPlayerInventory = function(source)
     qb_inventory:ClearInventory(source)
 end
 
----@param source number Source player ID (unused)
----@param slot number Item slot (unused)
----@param metadata table Item metadata (unused)
+---@param source number Source player ID
+---@param slot number Item slot
+---@param metadata table Item metadata
 Inventory.SetMetadata = function(source, slot, metadata)
-    print('qb-inventory does not support setting metadata')
+    local item = Inventory.GetItemBySlot(source, slot)
+    if not item then return end
+    local amount = item.amount or item.count or 1
+    Inventory.RemoveItem(source, item.name, amount, slot)
+    Inventory.AddItem(source, item.name, amount, metadata or {}, slot)
 end
 
 ---@param stashId string | number Stash ID

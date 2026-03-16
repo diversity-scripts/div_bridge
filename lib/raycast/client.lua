@@ -71,11 +71,11 @@ Raycast.FromCoords = function(coords, destination, flags, ignore, ignoreEntity)
     return hit, entityHit, endCoords, surfaceNormal, material
 end
 
----@param flags ShapetestFlags? Defaults to 511.
 ---@param distance number? Defaults to 10.
+---@param flags ShapetestFlags? Defaults to 511.
 ---@param ignore ShapetestIgnore? Defaults to 4.
 ---@param ignoreEntity number? Defaults to playerPed.
-Raycast.FromCamera = function(flags, distance, ignore, ignoreEntity)
+Raycast.FromCamera = function(distance, flags, ignore, ignoreEntity)
     distance = distance or 10
     local coords = GetFinalRenderedCamCoord()
     local destination = coords + getForwardVector() * distance

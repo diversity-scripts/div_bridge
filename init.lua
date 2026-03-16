@@ -81,12 +81,20 @@ end
 local function initialize()
     local configContent = LoadResourceFile(bridgeResName, 'config.lua')
     local configFn = configContent and load(configContent, '@@config.lua')
-    Bridge.config = configFn and configFn() or {}
+    if configFn then
+        local loader = configFn()
+        if type(loader) == 'function' then
+            Bridge.config = loader(Bridge.config) or Bridge.config
+        end
+    end
 
     local detectContent = LoadResourceFile(bridgeResName, 'detection.lua')
     local detectFn = detectContent and load(detectContent, '@@detection.lua')
     if detectFn then
-        Bridge.config = detectFn()(Bridge.config) or Bridge.config
+        local detector = detectFn()
+        if type(detector) == 'function' then
+            Bridge.config = detector(Bridge.config) or Bridge.config
+        end
     end
 
     Bridge.name = currentResName

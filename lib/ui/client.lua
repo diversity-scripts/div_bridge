@@ -3,10 +3,10 @@ local UI = {}
 ---@param text string
 ---@param x number
 ---@param y number
----@param scale number
----@param color table
----@param font number
-UI.DrawText = function(text, x, y, scale, color, font)
+---@param scale? number
+---@param color? table
+---@param font? number
+UI.Draw2DText = function(text, x, y, scale, color, font)
     if not text or not x or not y or not scale then
         return error('DrawText requires text, x, y, and scale options.')
     end
@@ -23,9 +23,9 @@ end
 
 ---@param text string
 ---@param coords vector3
----@param scale number
----@param color table
----@param font number
+---@param scale? number
+---@param color? table
+---@param font? number
 UI.Draw3DText = function(text, coords, scale, color, font)
     if not coords or not text then
         return error('Draw3DText requires coords and text options.')
@@ -43,23 +43,11 @@ UI.Draw3DText = function(text, coords, scale, color, font)
     ClearDrawOrigin()
 end
 
-function Utils.draw3DText(coords, text)
-    SetDrawOrigin(coords.x, coords.y, coords.z, 0)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(true)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry('STRING')
-    AddTextComponentString(text)
-    DrawText(0.0, 0.0)
-    ClearDrawOrigin()
-end
-
 ---@param x number
 ---@param y number
 ---@param width number
 ---@param height number
----@param color table
+---@param color? table
 UI.DrawRect = function(x, y, width, height, color)
     if not x or not y or not width or not height then
         return error('DrawRect requires x, y, width, and height options.')

@@ -128,14 +128,14 @@ end
 
 ---@param entity number | number[] Entity handle
 ---@param params TargetOptions Options for the entity
-Interaction.AddEntity = function(entity, params)
+Interaction.AddLocalEntity = function(entity, params)
     params.options = Interaction.FixOptions(params.options)
     qb_target:AddTargetEntity(entity, params)
 end
 
 ---@param entities number | number[] Entity handles
 ---@param labels string | string[] Labels to remove
-Interaction.RemoveEntity = function(entities, labels)
+Interaction.RemoveLocalEntity = function(entities, labels)
     qb_target:RemoveTargetEntity(entities, labels)
 end
 
@@ -143,7 +143,7 @@ end
 ---@param coords vector3 Coordinates of the box zone
 ---@param radius number Radius of the box zone
 ---@param options TargetOptions Options for the zone
----@param debug? boolean Debug options for the zone (optional)
+---@param debug? boolean Debug mode (optional)
 ---@return string Name of the zone
 Interaction.AddSphereZone = function(name, coords, radius, options, debug)
     options = Interaction.FixOptions(options)
@@ -165,10 +165,11 @@ end
 ---@param name string Name of the box zone
 ---@param coords vector3 Coordinates of the box zone
 ---@param size vector3 Size of the box zone
+---@param rotation number Rotation of the box zone (unused)
 ---@param options TargetOptions Options for the zone
----@param debug? boolean Debug options for the zone (optional)
+---@param debug? boolean Debug mode (optional)
 ---@return string Name of the zone
-Interaction.AddBoxZone = function(name, coords, size, options, debug)
+Interaction.AddBoxZone = function(name, coords, size, rotation, options, debug)
     options = Interaction.FixOptions(options)
     if not next(options) then return end
     qb_target:AddBoxZone(name, coords, size.x, size.y, {
@@ -189,17 +190,59 @@ end
 
 ---@param name string Name of the poly zone
 ---@param points vector2[] Coordinates of the poly zone
+---@param thickness number Thickness of the poly zone (unused)
 ---@param options TargetOptions Options for the zone
----@param debug? boolean Debug options for the zone (optional)
+---@param debug? boolean Debug mode (optional)
 ---@return string Name of the zone
-Interaction.AddPolyZone = function(name, points, options, debug)
+Interaction.AddPolyZone = function(name, points, thickness, options, debug)
     options = Interaction.FixOptions(options)
     if not next(options) then return end
-    qb_target:AddPolyZone(name, points, {
+    local norm = {}
+
+    if type(points) == 'table' then
+        for i = 1, #points do
+            local p = points[i]
+            local ptType = type(p)
+            if ptType == 'vector2' then
+                norm[i] = p
+            elseif ptType == 'vector3' then
+                norm[i] = vector2(p.x, p.y)
+            elseif ptType == 'table' then
+                local x, y = p.x or p[1], p.y or p[2]
+                if x and y then
+                    norm[i] = vector2(x, y)
+                end
+            end
+        end
+    end
+
+    local minZ = options.minZ
+    local maxZ = options.maxZ
+    if not (minZ and maxZ) then
+        local baseZ = options.z or (options.coords and options.coords.z)
+        if not baseZ and type(points) == 'table' then
+            local p1 = points[1]
+            if p1 then
+                local pt = type(p1)
+                if pt == 'vector3' then
+                    baseZ = p1.z
+                elseif pt == 'table' then
+                    baseZ = p1.z or p1[3]
+                end
+            end
+        end
+        if baseZ then
+            local half = (thickness and (thickness * 0.5)) or 1.0
+            minZ = minZ or (baseZ - half)
+            maxZ = maxZ or (baseZ + half)
+        end
+    end
+
+    qb_target:AddPolyZone(name, (#norm > 0 and norm) or points, {
         name = name,
         debugPoly = debug or false,
-        -- minZ = points[1].z - 1.0,
-        -- maxZ = points[1].z + 1.0,
+        minZ = minZ,
+        maxZ = maxZ,
     }, {
         options = options,
         distance = options.distance or 1.5,

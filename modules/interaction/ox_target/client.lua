@@ -135,21 +135,21 @@ Interaction.RemoveLocalEntity = function(entities, optionNames)
     ox_target:removeLocalEntity(entities, optionNames)
 end
 
----@field coords vector3 Coordinates of the box zone
----@field name? string Name of the box zone
----@field radius? number Radius of the box zone
----@field options TargetOptions Options for the zone
----@field debug? boolean Debug mode
----@field drawSprite? boolean Draw sprite
+---@param name string Name of the box zone
+---@param coords vector3 Coordinates of the box zone
+---@param radius number Radius of the box zone
+---@param options TargetOptions Options for the zone
+---@param debug? boolean Debug mode (optional)
 ---@return number | string ID
-Interaction.AddSphereZone = function(coords, name, radius, options, debug, drawSprite)
+Interaction.AddSphereZone = function(name, coords, radius, options, debug)
+    options = Interaction.FixOptions(options)
+    if not next(options) then return end
     local target = ox_target:addSphereZone({
         coords = coords,
         name = name,
         radius = radius,
         options = options,
         debug = debug or false,
-        drawSprite = drawSprite or true,
     })
     table.insert(targetZones, {
         id = id,
@@ -159,15 +159,16 @@ Interaction.AddSphereZone = function(coords, name, radius, options, debug, drawS
     return target
 end
 
----@field coords vector3 Coordinates of the box zone
----@field name? string Name of the box zone
----@field size? number Size of the box zone
----@field rotation? number Rotation of the box zone
----@field options TargetOptions Options for the zone
----@field debug? boolean Debug mode
----@field drawSprite? boolean Draw sprite
+---@param name string Name of the box zone
+---@param coords vector3 Coordinates of the box zone
+---@param size number Size of the box zone
+---@param rotation number Rotation of the box zone
+---@param options TargetOptions Options for the zone
+---@param debug? boolean Debug mode (optional)
 ---@return number | string ID
-Interaction.AddBoxZone = function(coords, name, size, rotation, options, debug, drawSprite)
+Interaction.AddBoxZone = function(name, coords, size, rotation, options, debug)
+    options = Interaction.FixOptions(options)
+    if not next(options) then return end
     local target = ox_target:addBoxZone({
         coords = coords,
         name = name,
@@ -175,7 +176,6 @@ Interaction.AddBoxZone = function(coords, name, size, rotation, options, debug, 
         rotation = rotation,
         options = options,
         debug = debug or false,
-        drawSprite = drawSprite or true,
     })
     table.insert(targetZones, {
         id = id,
@@ -185,21 +185,43 @@ Interaction.AddBoxZone = function(coords, name, size, rotation, options, debug, 
     return target
 end
 
----@field points vector3[] Coordinates of the box zone
----@field name? string Name of the box zone
----@field thickness? number Thickness of the box zone
----@field options TargetOptions Options for the zone
----@field debug? boolean Debug mode
----@field drawSprite? boolean Draw sprite
+---@param name string Name of the poly zone
+---@param points vector3[] Coordinates of the poly zone
+---@param thickness number Thickness of the poly zone
+---@param options TargetOptions Options for the zone
+---@param debug? boolean Debug mode (optional)
 ---@return number | string ID
-Interaction.AddPolyZone = function(points, name, thickness, options, debug, drawSprite)
+Interaction.AddPolyZone = function(name, points, thickness, options, debug)
+    -- normalize points: accept vector2[] (qb-target style) or vector3[] (ox_target style)
+    local norm = {}
+    if type(points) == 'table' then
+        local z =
+            (options and type(options) == 'table' and (
+                options.z
+                or (options.coords and options.coords.z)
+            )) or 0.0
+        for i = 1, #points do
+            local p = points[i]
+            local ptType = type(p)
+            if ptType == 'vector3' then
+                norm[i] = p
+            elseif ptType == 'vector2' then
+                norm[i] = vector3(p.x, p.y, z)
+            elseif ptType == 'table' then
+                local x, y, pz = p.x or p[1], p.y or p[2], p.z or p[3]
+                if x and y then
+                    norm[i] = vector3(x, y, pz or z)
+                end
+            end
+        end
+    end
+
     local target = ox_target:addPolyZone({
-        points = points,
+        points = (#norm > 0 and norm) or points,
         name = name,
         thickness = thickness,
         options = options,
         debug = debug or false,
-        drawSprite = drawSprite or true,
     })
     table.insert(targetZones, {
         id = id,

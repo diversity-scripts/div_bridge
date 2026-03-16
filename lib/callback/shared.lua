@@ -1,6 +1,6 @@
 local Callback = {}
 local CallbackRegistry = {}
-local CALLBACK_TIMEOUT = 30000
+local CALLBACK_TIMEOUT = 300000
 
 local RESOURCE = GetCurrentResourceName()
 local EVENT_NAMES = {
@@ -21,7 +21,9 @@ local function handleResponse(registry, callbackId, ...)
     if data.timer then math.randomseed(GetGameTimer()) end
 
     if data.callback then
-        data.callback(...)
+        CreateThread(function()
+            data.callback(...)
+        end)
     end
 
     if data.promise then
@@ -67,14 +69,33 @@ end
 
 -- SERVER SIDE
 if IsDuplicityVersion() then
-    function Callback.Register(name, handler)
+    function Callback.RegisterServer(name, handler)
         Callback[name] = handler
     end
 
-    function Callback.Trigger(name, target, ...)
+    function Callback.TriggerClient(name, target, ...)
         local args = { ... }
-        local callback = type(args[1]) == 'function' and table.remove(args, 1) or nil
+        local delay, callback
+        if type(args[1]) == 'number' then
+            delay = table.remove(args, 1)
+        end
+        if type(args[1]) == 'function' then
+            callback = table.remove(args, 1)
+        end
+        if delay and delay > 0 then
+            SetTimeout(delay, function()
+                triggerCallback(EVENT_NAMES.SERVER_TO_CLIENT, target, name, args, callback)
+            end)
+            return
+        end
         return triggerCallback(EVENT_NAMES.SERVER_TO_CLIENT, target, name, args, callback)
+    end
+
+    -- Await a response from a specific client and return the values (yields current coroutine)
+    function Callback.AwaitClient(name, target, ...)
+        local args = { ... }
+        -- no callback passed so this will yield until the promise resolves
+        return triggerCallback(EVENT_NAMES.SERVER_TO_CLIENT, target, name, args, nil)
     end
 
     RegisterNetEvent(EVENT_NAMES.CLIENT_TO_SERVER, function(name, callbackId, ...)
@@ -102,14 +123,32 @@ if IsDuplicityVersion() then
 else -- CLIENT SIDE
     local ClientCallbacks = {}
 
-    function Callback.Register(name, handler)
+    function Callback.RegisterClient(name, handler)
         ClientCallbacks[name] = handler
     end
 
-    function Callback.Trigger(name, ...)
+    function Callback.TriggerServer(name, ...)
         local args = { ... }
-        local callback = type(args[1]) == 'function' and table.remove(args, 1) or nil
+        local delay, callback
+        if type(args[1]) == 'number' then
+            delay = table.remove(args, 1)
+        end
+        if type(args[1]) == 'function' then
+            callback = table.remove(args, 1)
+        end
+        if delay and delay > 0 then
+            SetTimeout(delay, function()
+                triggerCallback(EVENT_NAMES.CLIENT_TO_SERVER, nil, name, args, callback)
+            end)
+            return
+        end
         return triggerCallback(EVENT_NAMES.CLIENT_TO_SERVER, nil, name, args, callback)
+    end
+
+    -- Await a response from the server and return the values (yields current coroutine)
+    function Callback.AwaitServer(name, ...)
+        local args = { ... }
+        return triggerCallback(EVENT_NAMES.CLIENT_TO_SERVER, nil, name, args, nil)
     end
 
     RegisterNetEvent(EVENT_NAMES.CLIENT_RESPONSE, function(name, callbackId, ...)

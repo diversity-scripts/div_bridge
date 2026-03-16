@@ -3,6 +3,9 @@ local Config = {}
 -- Mode for debugging
 Config.Debug = false
 
+-- Language for the locale files
+Config.Language = 'en'
+
 -- FRAMEWORK
 ------------------------
 -- Options:

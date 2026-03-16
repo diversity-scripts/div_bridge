@@ -80,7 +80,7 @@ end
 
 ---@param source number Source player ID
 Inventory.ClearPlayerInventory = function(source)
-    print('ps-inventory does not provide "ClearInventory" function.')
+    print('ps-inventory does not provide "ClearInventory" function')
 end
 
 ---@param source number Source player ID (unused)

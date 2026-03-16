@@ -55,6 +55,7 @@ end
 ---@param upper? boolean Whether to use uppercase letters
 ---@return string
 Math.ToHex = function(n, upper)
+    if type(n) == 'number' then n = tonumber(n) end
     if type(n) ~= 'number' then error('Value must be a number') end
     local formatString = ('0x%s'):format(upper and '%X' or '%x')
     return formatString:format(n)
@@ -243,17 +244,6 @@ Math.ParseNumber = function(input, min, max, round)
     return n
 end
 
----Clamps a number between 0 and 1
----@param t number The number to clamp
----@return number
-Math.Clamp01 = function(t)
-    if type(t) == 'string' then t = tonumber(t) end
-    if type(t) ~= 'number' then error('Value must be a number') end
-    if t < 0 then return 0 end
-    if t > 1 then return 1 end
-    return t
-end
-
 ---Linearly interpolates between two values over a specified duration.
 ---@generic T : number | table | vector2 | vector3 | vector4
 ---@param start T -- The starting value of the interpolation.
@@ -294,19 +284,19 @@ Math.Lerp = function(start, finish, duration)
 end
 
 ---Calculates the inverse of a linear interpolation between two values.
----@param a number | table | vector2 | vector3 | vector4 -- The starting value of the interpolation.
----@param b number | table | vector2 | vector3 | vector4 -- The ending value of the interpolation.
+---@param start number | table | vector2 | vector3 | vector4 -- The starting value of the interpolation.
+---@param finish number | table | vector2 | vector3 | vector4 -- The ending value of the interpolation.
 ---@param value number | table | vector2 | vector3 | vector4 -- The value to calculate the inverse of.
 ---@return number
-Math.InverseLerp = function(a, b, value)
-    if type(a) == 'string' then a = tonumber(a) end
-    if type(b) == 'string' then b = tonumber(b) end
+Math.InverseLerp = function(start, finish, value)
+    if type(start) == 'string' then start = tonumber(start) end
+    if type(finish) == 'string' then finish = tonumber(finish) end
     if type(value) == 'string' then value = tonumber(value) end
-    if type(a) ~= 'number' then error('Value must be a number') end
-    if type(b) ~= 'number' then error('Value must be a number') end
+    if type(start) ~= 'number' then error('Value must be a number') end
+    if type(finish) ~= 'number' then error('Value must be a number') end
     if type(value) ~= 'number' then error('Value must be a number') end
-    if a == b then return 0 end
-    return (value - a) / (b - a)
+    if start == finish then return 0 end
+    return (value - start) / (finish - start)
 end
 
 ---Maps a value from one range to another.

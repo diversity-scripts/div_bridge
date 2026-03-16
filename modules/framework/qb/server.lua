@@ -135,6 +135,12 @@ Framework.GetAllPlayers = function()
     return QBCore.Functions.GetPlayers()
 end
 
+---This will return the jobs registered in the framework
+---@return table
+Framework.GetFrameworkJobs = function()
+    return QBCore.Shared.Jobs
+end
+
 -- [[ Inventory Related ]] --
 
 ---Registers a usable item with a callback function
@@ -269,6 +275,15 @@ Framework.GetItemByName = function(source, itemName, metadata, slot)
 end
 
 ---@param source number
+---@param slot number
+---@return table
+Framework.GetItemBySlot = function(source, slot)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return {} end
+    return player.Functions.GetItemBySlot(slot) or {}
+end
+
+---@param source number
 ---@return table
 Framework.GetPlayerInventory = function(source)
     local player = Framework.GetPlayerFromId(source)
@@ -281,15 +296,6 @@ Framework.ClearPlayerInventory = function(source)
     local player = Framework.GetPlayerFromId(source)
     if not player then return end
     player.Functions.ClearInventory()
-end
-
----@param source number
----@param slot number
----@return table
-Framework.GetItemBySlot = function(source, slot)
-    local player = Framework.GetPlayerFromId(source)
-    if not player then return {} end
-    return player.Functions.GetItemBySlot(slot) or {}
 end
 
 ---@param source number

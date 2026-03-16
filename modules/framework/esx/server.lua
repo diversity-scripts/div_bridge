@@ -239,6 +239,13 @@ Framework.GetItemByName = function(source, itemName, metadata, slot)
 end
 
 ---@param source number
+---@param slot number
+---@return table
+Framework.GetItemBySlot = function(source, slot)
+    return {}, print('ESX does not provide a "GetItemBySlot" function')
+end
+
+---@param source number
 ---@return table
 Framework.GetPlayerInventory = function(source)
     local player = Framework.GetPlayerFromId(source)
@@ -270,6 +277,13 @@ Framework.ClearPlayerInventory = function(source)
             player.removeInventoryItem(v.name, v.count)
         end
     end
+end
+
+---@param source number
+---@param slot number
+---@param metadata table
+Framework.SetMetadata = function(source, slot, metadata)
+    return {}, print('ESX does not support metadata')
 end
 
 ---@param itemName string

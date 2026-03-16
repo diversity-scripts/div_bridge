@@ -129,6 +129,8 @@ Table.DeepClone = deepClone
 
 ---Shuffles the elements of a table
 ---@param tbl table The table to shuffle
+---@param copy? boolean Whether to create a copy of the table before shuffling
+---@param rnd? function The random function to use for shuffling
 ---@return table
 Table.Shuffle = function(tbl, copy, rnd)
     if type(tbl) ~= 'table' then return error('Value must be a table') end

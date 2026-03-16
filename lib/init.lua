@@ -1,7 +1,16 @@
 Lib = _G.dLib or {}
 
+if not _VERSION:find('5.4') then
+    error('^1Lua 5.4 must be enabled in the resource manifest!^0', 2)
+end
+
 local bridgeResName = 'div_bridge'
 local context = IsDuplicityVersion() and 'server' or 'client'
+local LoadResourceFile = LoadResourceFile
+
+if rawget(Lib, 'name') == bridgeResName then
+    error(("^1Cannot load %s more than once.^0"):format(bridgeResName))
+end
 
 local function loadLibModule(moduleName)
     local chunk, finalPath
@@ -30,6 +39,31 @@ local function loadLibModule(moduleName)
 
     return fn()
 end
+
+local function initialize()
+    local configContent = LoadResourceFile(bridgeResName, 'config.lua')
+    local configFn = configContent and load(configContent, '@@config.lua')
+    if configFn then
+        local loader = configFn()
+        if type(loader) == 'function' then
+            Lib.config = loader(Lib.config) or Lib.config
+        end
+    end
+
+    local detectContent = LoadResourceFile(bridgeResName, 'detection.lua')
+    local detectFn = detectContent and load(detectContent, '@@detection.lua')
+    if detectFn then
+        local detector = detectFn()
+        if type(detector) == 'function' then
+            Lib.config = detector(Lib.config) or Lib.config
+        end
+    end
+
+    Bridge.name = currentResName
+    Bridge.context = context
+end
+
+initialize()
 
 setmetatable(Lib, {
     __index = function(self, key)
