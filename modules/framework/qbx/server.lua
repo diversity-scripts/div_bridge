@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local qbx_core = exports.qbx_core
 local Framework = {}
 
@@ -148,6 +149,171 @@ Framework.RegisterUsableItem = function(itemName, cb)
         cb(src, itemData)
     end
     qbx_core:CreateUseableItem(itemName, func)
+end
+
+---@param source number
+---@param itemName string
+---@param itemCount number
+---@param metadata? table
+---@param slot? number
+---@return boolean
+Framework.AddItem = function(source, itemName, itemCount, metadata, slot)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return false end
+    return player.Functions.AddItem(itemName, itemCount or 1, slot, metadata or nil) or false
+end
+
+---@param source number
+---@param itemName string
+---@param itemCount number
+---@param metadata? table
+---@param slot? number
+---@return boolean
+Framework.RemoveItem = function(source, itemName, itemCount, metadata, slot)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return false end
+
+    if not slot and metadata then
+        local inv = player.PlayerData?.items or {}
+        for _, v in pairs(inv) do
+            if v.name == itemName and (v.info or v.metadata) == metadata then
+                slot = v.slot
+                break
+            end
+        end
+    end
+
+    if slot then
+        return player.Functions.RemoveItem(itemName, itemCount or 1, slot) or false
+    end
+
+    return player.Functions.RemoveItem(itemName, itemCount or 1) or false
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@return boolean
+Framework.CanCarryItem = function(source, itemName, itemCount, metadata)
+    return false, print('QBX does not provide a "CanCarryItem" function')
+end
+
+---@param source number
+---@param items string | string[]
+---@return number
+Framework.GetItemCount = function(source, items)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return 0 end
+    local inv = player.PlayerData?.items or {}
+    local names = type(items) == 'table' and items or { items }
+    local wanted = {}
+    for _, name in pairs(names) do wanted[name] = true end
+    local count = 0
+    for _, v in pairs(inv) do
+        if wanted[v.name] then
+            count = count + (v.amount or v.count or v.quantity or 0)
+        end
+    end
+    return count
+end
+
+---@param source number
+---@param items string | string[]
+---@param itemCount number
+---@return boolean
+Framework.HasItem = function(source, items, itemCount)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return false end
+    local inv = player.PlayerData?.items or {}
+    local names = type(items) == 'table' and items or { items }
+    local required = itemCount or 1
+    for _, name in pairs(names) do
+        local total = 0
+        for _, v in pairs(inv) do
+            if v.name == name then
+                total = total + (v.amount or v.count or 0)
+            end
+        end
+        if total < required then
+            return false
+        end
+    end
+    return true
+end
+
+---@param source number
+---@param itemName string
+---@param metadata? table
+---@param slot? number
+---@return table
+Framework.GetItemData = function(source, itemName, metadata, slot)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return {} end
+    if slot then
+        local item = player.Functions.GetItemBySlot(slot)
+        return item or {}
+    end
+    local item = player.Functions.GetItemByName(itemName)
+    return item or {}
+end
+
+---@param source number
+---@param itemName string
+---@param metadata? table
+---@param slot? number
+---@return table
+Framework.GetItemByName = function(source, itemName, metadata, slot)
+    return Framework.GetItemData(source, itemName, metadata, slot)
+end
+
+---@param source number
+---@param slot number
+---@return table
+Framework.GetItemBySlot = function(source, slot)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return {} end
+    return player.Functions.GetItemBySlot(slot) or {}
+end
+
+---@param source number
+---@return table
+Framework.GetPlayerInventory = function(source)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return {} end
+    return player.PlayerData?.items or {}
+end
+
+---@param source number
+Framework.ClearPlayerInventory = function(source)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return end
+    player.Functions.ClearInventory()
+end
+
+---@param source number
+---@param slot number
+---@param metadata table
+Framework.SetMetadata = function(source, slot, metadata)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return end
+    local item = player.Functions.GetItemBySlot(slot)
+    if not item then return end
+    local amount = item.amount or item.count or 1
+    player.Functions.RemoveItem(item.name, amount, slot)
+    player.Functions.AddItem(item.name, amount, slot, metadata or {})
+end
+
+---@param itemName string (unused)
+---@return string
+Framework.GetItemlabel = function(itemName)
+    return '', print('QBX does not provide a "GetItemlabel" function')
+end
+
+---@param itemName? string (unused)
+---@return table
+Framework.Items = function(itemName)
+    return {}, print('QBX does not provide a "Items" function')
 end
 
 -- [[ Account Related ]] --

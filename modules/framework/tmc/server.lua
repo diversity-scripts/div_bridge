@@ -156,6 +156,105 @@ Framework.RegisterUsableItem = function(itemName, cb)
     print('TMC does not have a function to register usable items.')
 end
 
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return boolean
+Framework.AddItem = function(source, itemName, itemCount, metadata, slot)
+    return false, print('TMC does not provide a "AddItem" function')
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return boolean
+Framework.RemoveItem = function(source, itemName, itemCount, metadata, slot)
+    return false, print('TMC does not provide a "RemoveItem" function')
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@return boolean
+Framework.CanCarryItem = function(source, itemName, itemCount, metadata)
+    return false, print('TMC does not provide a "CanCarryItem" function')
+end
+
+---@param source number (unused)
+---@param items string | string[] (unused)
+---@return number
+Framework.GetItemCount = function(source, items)
+    return 0, print('TMC does not provide a "GetItemCount" function')
+end
+
+---@param source number (unused)
+---@param items string | string[] (unused)
+---@param itemCount number (unused)
+---@return boolean
+Framework.HasItem = function(source, items, itemCount)
+    return false, print('TMC does not provide a "HasItem" function')
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return table
+Framework.GetItemData = function(source, itemName, metadata, slot)
+    return {}, print('TMC does not provide a "GetItemData" function')
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return table
+Framework.GetItemByName = function(source, itemName, metadata, slot)
+    return {}, print('TMC does not provide a "GetItemByName" function')
+end
+
+---@param source number (unused)
+---@param slot number (unused)
+---@return table
+Framework.GetItemBySlot = function(source, slot)
+    return {}, print('TMC does not provide a "GetItemBySlot" function')
+end
+
+---@param source number (unused)
+---@return table
+Framework.GetPlayerInventory = function(source)
+    return {}, print('TMC does not provide a "GetPlayerInventory" function')
+end
+
+---@param source number (unused)
+Framework.ClearPlayerInventory = function(source)
+    print('TMC does not provide a "ClearPlayerInventory" function')
+end
+
+---@param source number (unused)
+---@param slot number (unused)
+---@param metadata table (unused)
+Framework.SetMetadata = function(source, slot, metadata)
+    return {}, print('TMC does not provide a "SetMetadata" function')
+end
+
+---@param itemName string (unused)
+---@return string
+Framework.GetItemlabel = function(itemName)
+    return '', print('TMC does not provide a "GetItemlabel" function')
+end
+
+---@param itemName? string (unused)
+---@return table
+Framework.Items = function(itemName)
+    return {}, print('TMC does not provide a "Items" function')
+end
+
 -- [[ Account Related ]] --
 
 ---This will add money to the player by account type

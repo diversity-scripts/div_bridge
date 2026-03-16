@@ -102,6 +102,105 @@ Framework.RegisterUsableItem = function(itemName, cb)
 
 end
 
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return boolean
+Framework.AddItem = function(source, itemName, itemCount, metadata, slot)
+    return false
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return boolean
+Framework.RemoveItem = function(source, itemName, itemCount, metadata, slot)
+    return false
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param itemCount number (unused)
+---@param metadata? table (unused)
+---@return boolean
+Framework.CanCarryItem = function(source, itemName, itemCount, metadata)
+    return false
+end
+
+---@param source number (unused)
+---@param items string | string[] (unused)
+---@return number
+Framework.GetItemCount = function(source, items)
+    return 0
+end
+
+---@param source number (unused)
+---@param items string | string[] (unused)
+---@param itemCount number (unused)
+---@return boolean
+Framework.HasItem = function(source, items, itemCount)
+    return false
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return table
+Framework.GetItemData = function(source, itemName, metadata, slot)
+    return {}
+end
+
+---@param source number (unused)
+---@param itemName string (unused)
+---@param metadata? table (unused)
+---@param slot? number (unused)
+---@return table
+Framework.GetItemByName = function(source, itemName, metadata, slot)
+    return {}
+end
+
+---@param source number (unused)
+---@param slot number (unused)
+---@return table
+Framework.GetItemBySlot = function(source, slot)
+    return {}
+end
+
+---@param source number (unused)
+---@return table
+Framework.GetPlayerInventory = function(source)
+    return {}
+end
+
+---@param source number (unused)
+Framework.ClearPlayerInventory = function(source)
+
+end
+
+---@param source number (unused)
+---@param slot number (unused)
+---@param metadata table (unused)
+Framework.SetMetadata = function(source, slot, metadata)
+    return {}
+end
+
+---@param itemName string (unused)
+---@return string
+Framework.GetItemlabel = function(itemName)
+    return ''
+end
+
+---@param itemName? string (unused)
+---@return table
+Framework.Items = function(itemName)
+    return {}
+end
+
 -- [[ Account Related ]] --
 
 ---This will add money to the player by account type
