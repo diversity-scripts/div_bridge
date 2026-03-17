@@ -9,7 +9,7 @@ local function getFramework()
     if GetResourceState('ox_core') == 'started' then return 'ox_core' end
     if GetResourceState('ND_Core') == 'started' then return 'nd_core' end
     if GetResourceState('core') == 'started' then return 'tmc' end
-    return 'standalone'
+    return nil
 end
 
 local function getInventory()

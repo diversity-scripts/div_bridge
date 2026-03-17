@@ -41,26 +41,16 @@ local function loadLibModule(moduleName)
 end
 
 local function initialize()
+    Lib.config = Lib.config or {}
     local configContent = LoadResourceFile(bridgeResName, 'config.lua')
     local configFn = configContent and load(configContent, '@@config.lua')
-    if configFn then
-        local loader = configFn()
-        if type(loader) == 'function' then
-            Lib.config = loader(Lib.config) or Lib.config
-        end
-    end
+    Lib.config = configFn and configFn() or {}
 
     local detectContent = LoadResourceFile(bridgeResName, 'detection.lua')
     local detectFn = detectContent and load(detectContent, '@@detection.lua')
     if detectFn then
-        local detector = detectFn()
-        if type(detector) == 'function' then
-            Lib.config = detector(Lib.config) or Lib.config
-        end
+        Lib.config = detectFn()(Lib.config) or Lib.config
     end
-
-    Bridge.name = currentResName
-    Bridge.context = context
 end
 
 initialize()

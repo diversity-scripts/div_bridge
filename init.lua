@@ -93,22 +93,15 @@ local function hasModule(name)
 end
 
 local function initialize()
+    Bridge.config = Bridge.config or {}
     local configContent = LoadResourceFile(bridgeResName, 'config.lua')
     local configFn = configContent and load(configContent, '@@config.lua')
-    if configFn then
-        local loader = configFn()
-        if type(loader) == 'function' then
-            Bridge.config = loader(Bridge.config) or Bridge.config
-        end
-    end
+    Bridge.config = configFn and configFn() or {}
 
     local detectContent = LoadResourceFile(bridgeResName, 'detection.lua')
     local detectFn = detectContent and load(detectContent, '@@detection.lua')
     if detectFn then
-        local detector = detectFn()
-        if type(detector) == 'function' then
-            Bridge.config = detector(Bridge.config) or Bridge.config
-        end
+        Bridge.config = detectFn()(Bridge.config) or Bridge.config
     end
 
     Bridge.name = currentResName
