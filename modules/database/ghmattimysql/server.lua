@@ -17,65 +17,65 @@ end
 ---Fetch multiple rows
 ---@param query string SQL query
 ---@param parameters? any[] Parameters for the query
----@return promise
+---@return table
 Database.Select = function(query, parameters)
-    return promiseWrapper('execute', query, parameters)
+    return Citizen.Await(promiseWrapper('execute', query, parameters))
 end
 
 ---Execute query (Returns affected rows count)
 ---@param query string SQL query
 ---@param parameters? any[] Parameters for the query
----@return promise
+---@return number
 Database.Execute = function(query, parameters)
     local p = promise.new()
     ghmattimysql:execute(query, parameters or {}, function(result)
         p:resolve(result and result.affectedRows or 0)
     end)
-    return p
+    return Citizen.Await(p)
 end
 
 ---Fetch single value
 ---@param query string SQL query
 ---@param parameters? any[] Parameters for the query
----@return promise
+---@return any
 Database.Scalar = function(query, parameters)
-    return promiseWrapper('scalar', query, parameters)
+    return Citizen.Await(promiseWrapper('scalar', query, parameters))
 end
 
 ---Insert row (Returns ID)
 ---@param query string SQL query
 ---@param parameters? any[] Parameters for the query
----@return promise
+---@return number
 Database.Insert = function(query, parameters)
     local p = promise.new()
     ghmattimysql:execute(query, parameters or {}, function(result)
         p:resolve(result and result.insertId or 0)
     end)
-    return p
+    return Citizen.Await(p)
 end
 
 ---Update/Delete (Returns affected rows count)
 ---@param query string SQL query
 ---@param parameters? any[] Parameters for the query
----@return promise
+---@return number
 Database.Update = function(query, parameters)
     local p = promise.new()
     ghmattimysql:execute(query, parameters or {}, function(result)
         p:resolve(result and result.affectedRows or 0)
     end)
-    return p
+    return Citizen.Await(p)
 end
 
 ---Transaction (Batch operations)
 ---@param queries string[] SQL queries
 ---@param parameters? any[] Parameters for the queries
----@return promise
+---@return any
 Database.Transaction = function(queries, parameters)
     local p = promise.new()
     ghmattimysql:transaction(queries, function(result)
         p:resolve(result)
     end)
-    return p
+    return Citizen.Await(p)
 end
 
 return Database
