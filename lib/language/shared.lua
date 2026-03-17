@@ -85,12 +85,17 @@ Language.Locale = function(key, ...)
         return formatValue(key, ...)
     end
 
-    local dict = rcache[key]
-    if not dict then
-        dict = loadLocale(res, key)
-        rcache[key] = dict
+    local dict = getDict(lang)
+    local value = dict and dict[key]
+    if value ~= nil then return formatValue(value, ...) end
+    if lang ~= 'en' then
+        local fallback = getDict('en')
+        local v = fallback and fallback[key]
+        if v ~= nil then return formatValue(v, ...) end
     end
-    return dict
+    local other = getDict(key)
+    if other and next(other) then return other end
+    return formatValue(key, ...)
 end
 
 ---@param key? string Locale key or dotted path
