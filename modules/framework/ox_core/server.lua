@@ -117,6 +117,13 @@ Framework.GetJobCount = function(jobName)
     return GlobalState[('%s:count'):format(jobName)] or 0
 end
 
+---This will return the players group
+---@param source number (unused)
+---@return string | nil
+Framework.GetPlayerGroup = function(source)
+    return nil
+end
+
 ---This will return a table of all logged in players
 ---@return table
 Framework.GetAllPlayers = function()

@@ -116,6 +116,14 @@ Framework.GetJobCount = function(jobName)
     return #xPlayers
 end
 
+---This will return the players group
+---@param source number
+---@return string | nil
+Framework.GetPlayerGroup = function(source)
+    local player = Framework.GetPlayerFromId(source)
+    return player?.getGroup() or nil
+end
+
 ---This will return a table of all logged in players
 ---@return table
 Framework.GetAllPlayers = function()

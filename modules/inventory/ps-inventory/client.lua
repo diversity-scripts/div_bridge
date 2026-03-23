@@ -39,4 +39,13 @@ Inventory.GetPlayerInventory = function()
     return playerData?.items or {}
 end
 
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('ps-inventory', ('html/images/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('ps-inventory', ('html/images/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://ps-inventory/html/images/%s.png'):format(itemName) or webpPath and ('nui://ps-inventory/html/images/%s.webp'):format(itemName)
+    return imagePath or ''
+end
+
 return Inventory

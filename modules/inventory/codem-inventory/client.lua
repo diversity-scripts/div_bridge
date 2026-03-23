@@ -34,4 +34,13 @@ Inventory.GetPlayerInventory = function()
     return codem_inventory:getUserInventory() or {}
 end
 
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('codem-inventory', ('html/itemimages/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('codem-inventory', ('html/itemimages/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://codem-inventory/html/itemimages/%s.png'):format(itemName) or webpPath and ('nui://codem-inventory/web/itemimages/%s.webp'):format(itemName)
+    return imagePath or ''
+end
+
 return Inventory

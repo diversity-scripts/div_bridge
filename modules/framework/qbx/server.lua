@@ -132,6 +132,14 @@ Framework.GetJobCount = function(jobName)
     return count
 end
 
+---This will return the players group
+---@param source number
+---@return string | table | nil
+Framework.GetPlayerGroup = function(source)
+    local perms = exports.qbx_core:GetPermission(source)
+    return perms
+end
+
 ---This will return a table of all logged in players
 ---@return table
 Framework.GetAllPlayers = function()

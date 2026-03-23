@@ -26,4 +26,13 @@ Inventory.GetPlayerInventory = function()
     return tgiann_inventory:GetPlayerItems() or {}
 end
 
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('inventory_images', ('images/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('inventory_images', ('images/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://inventory_images/images/%s.png'):format(itemName) or webpPath and ('nui://inventory_images/images/%s.webp'):format(itemName)
+    return imagePath or ''
+end
+
 return Inventory

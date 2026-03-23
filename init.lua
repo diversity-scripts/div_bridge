@@ -80,14 +80,6 @@ end
 
 local function hasModule(name)
     local key = tostring(name)
-    local moduleType = Bridge.config[key] or Bridge.config[key:gsub("^%l", string.upper)]
-    if not moduleType then return false end
-    if moduleType == 'framework' then
-        local fw = rawget(Bridge, 'Framework') or loadModuleFile('Framework')
-        return type(fw) == 'table'
-    end
-    local state = GetResourceState(moduleType)
-    if state ~= 'started' then return false end
     local mod = rawget(Bridge, key) or loadModuleFile(key)
     return type(mod) == 'table'
 end

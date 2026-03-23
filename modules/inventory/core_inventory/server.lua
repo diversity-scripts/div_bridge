@@ -166,7 +166,7 @@ end
 
 ---@param itemName string Item name
 ---@return string
-Inventory.GetItemlabel = function(itemName)
+Inventory.GetItemLabel = function(itemName)
     local items = core_inventory:getItemsList()
     if items and items[itemName] then
         return items[itemName].label
@@ -178,6 +178,15 @@ end
 ---@return table
 Inventory.Items = function(itemName)
     return core_inventory:getItemsList() or {}
+end
+
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('core_inventory', ('html/img/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('core_inventory', ('html/img/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://core_inventory/html/img/%s.png'):format(itemName) or webpPath and ('nui://core_inventory/html/img/%s.webp'):format(itemName)
+    return imagePath or ''
 end
 
 return Inventory

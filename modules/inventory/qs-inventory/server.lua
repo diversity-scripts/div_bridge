@@ -141,7 +141,7 @@ end
 
 ---@param itemName string Item name
 ---@return string
-Inventory.GetItemlabel = function(itemName)
+Inventory.GetItemLabel = function(itemName)
     return qs_inventory:GetItemLabel(itemName) or itemName
 end
 
@@ -149,6 +149,15 @@ end
 ---@return table
 Inventory.Items = function(itemName)
     return qs_inventory:GetItemList()
+end
+
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('qs-inventory', ('html/images/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('qs-inventory', ('html/images/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://qs-inventory/html/images/%s.png'):format(itemName) or webpPath and ('nui://qs-inventory/html/images/%s.webp'):format(itemName)
+    return imagePath or ''
 end
 
 return Inventory

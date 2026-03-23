@@ -90,6 +90,13 @@ Framework.GetJobCount = function(jobName)
     return 0
 end
 
+---This will return the players group
+---@param source number
+---@return string | nil
+Framework.GetPlayerGroup = function(source)
+    return nil
+end
+
 ---This will return a table of all logged in players
 ---@return table
 Framework.GetAllPlayers = function()
@@ -191,7 +198,7 @@ end
 
 ---@param itemName string (unused)
 ---@return string
-Framework.GetItemlabel = function(itemName)
+Framework.GetItemLabel = function(itemName)
     return ''
 end
 

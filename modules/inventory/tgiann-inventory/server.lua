@@ -142,7 +142,7 @@ end
 
 ---@param itemName string Item name
 ---@return string
-Inventory.GetItemlabel = function(itemName)
+Inventory.GetItemLabel = function(itemName)
     return tgiann_inventory:GetItemLabel(itemName) or itemName
 end
 
@@ -150,6 +150,15 @@ end
 ---@return table
 Inventory.Items = function(itemName)
     return tgiann_inventory:Items(itemName) or {}
+end
+
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('inventory_images', ('images/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('inventory_images', ('images/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://inventory_images/images/%s.png'):format(itemName) or webpPath and ('nui://inventory_images/images/%s.webp'):format(itemName)
+    return imagePath or ''
 end
 
 return Inventory

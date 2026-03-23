@@ -26,4 +26,13 @@ Inventory.GetPlayerInventory = function()
     return origen_inventory:GetInventory() or {}
 end
 
+---@param itemName string Item name
+---@return string
+Inventory.GetImagePath = function(itemName)
+    local pngPath = LoadResourceFile('origen_inventory', ('html/images/%s.png'):format(itemName))
+    local webpPath = LoadResourceFile('origen_inventory', ('html/images/%s.webp'):format(itemName))
+    local imagePath = pngPath and ('nui://origen_inventory/html/images/%s.png'):format(itemName) or webpPath and ('nui://origen_inventory/html/images/%s.webp'):format(itemName)
+    return imagePath or ''
+end
+
 return Inventory
