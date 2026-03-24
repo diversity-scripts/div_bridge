@@ -332,7 +332,7 @@ end
 ---@param amount number
 ---@return boolean
 Framework.RemoveAccountBalance = function(source, accountType, amount)
-    local player = Framework.GetPlayer(source)
+    local player = Framework.GetPlayerFromId(source)
     if not player then return false end
 
     if amount <= 0 then return false end
@@ -350,7 +350,7 @@ end
 ---@param accountType 'money' | 'bank'
 ---@return number
 Framework.GetAccountBalance = function(source, accountType)
-    local player = Framework.GetPlayer(source)
+    local player = Framework.GetPlayerFromId(source)
     if not player then return 0 end
 
     if accountType == 'cash' then accountType = 'money' end
