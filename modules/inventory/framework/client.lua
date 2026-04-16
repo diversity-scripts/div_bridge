@@ -1,23 +1,24 @@
 local Inventory = {}
 
+local function getFramework()
+    local framework = Bridge.Framework
+    if type(framework) ~= 'table' then
+        error('Inventory: Bridge.Framework failed to load or is invalid. Please check your config.')
+    end
+    return framework
+end
+
+local framework = getFramework()
+
 ---@return string
 Inventory.GetResourceName = function()
     return 'framework'
 end
 
-local function getFramework()
-    local framework = Bridge.Framework
-    if type(framework) ~= 'table' then
-        error('Bridge.Framework failed to load or is invalid. Please check your config.')
-    end
-    return framework
-end
-
 ---@param itemName string Item name
 ---@return number
 Inventory.GetItemCount = function(itemName)
-    local framework = getFramework()
-    assert(framework.GetItemCount, 'Your framework does not provide a "GetItemCount" function.')
+    assert(framework.GetItemCount, 'Your framework does not provide a client-side "GetItemCount" function.')
     return framework:GetItemCount(itemName) or 0
 end
 
@@ -25,15 +26,13 @@ end
 ---@param itemCount number Item count
 ---@return boolean
 Inventory.HasItem = function(itemName, itemCount)
-    local framework = getFramework()
-    assert(framework.HasItem, 'Your framework does not provide a "HasItem" function.')
+    assert(framework.HasItem, 'Your framework does not provide a client-side "HasItem" function.')
     return framework:HasItem(itemName, itemCount) or false
 end
 
 ---@return table
 Inventory.GetPlayerInventory = function()
-    local framework = getFramework()
-    assert(framework.GetPlayerInventory, 'Your framework does not provide a "GetPlayerInventory" function.')
+    assert(framework.GetPlayerInventory, 'Your framework does not provide a client-side "GetPlayerInventory" function.')
     return framework:GetPlayerInventory() or {}
 end
 

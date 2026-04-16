@@ -111,16 +111,30 @@ end
 
 initialize()
 
+local function createDummyProxy(name)
+    local dummy = {}
+    setmetatable(dummy, {
+        __index = function(_, key)
+            return createDummyProxy(name .. '.' .. tostring(key))
+        end,
+        __call = function(...)
+            if Bridge.config.Debug then
+                print(("^1[div_bridge] Attempted to call non-existent module/function: %s^0"):format(name))
+            end
+            return nil
+        end
+    })
+    return dummy
+end
+
 setmetatable(Bridge, {
     __index = function(self, key)
         local mod = loadModuleFile(key)
         if mod then return mod end
 
-        return function()
-            if Bridge.config.Debug then
-                print(("^1[div_bridge] Attempted to call non-existent module/function: %s^0"):format(key))
-            end
-        end
+        local dummy = createDummyProxy(tostring(key))
+        rawset(self, key, dummy)
+        return dummy
     end
 })
 
@@ -133,6 +147,7 @@ if Bridge.config.Debug then
     print("^3Interaction: ^7" .. Bridge.config.Interaction)
     print("^3Notification: ^7" .. Bridge.config.Notification)
     print("^3TextUI: ^7" .. Bridge.config.TextUI)
+    print("^3Bank: ^7" .. Bridge.config.Banking)
     print("^3======= Diversity Bridge Initialized =======^7")
 end
 

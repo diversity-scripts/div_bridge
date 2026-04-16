@@ -326,6 +326,19 @@ end
 
 -- [[ Account Related ]] --
 
+---This will return the players money by account type
+---@param source number
+---@param accountType 'cash' | 'bank'
+---@return number
+Framework.GetAccountBalance = function(source, accountType)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return 0 end
+
+    if accountType == 'money' then accountType = 'cash' end
+    local balance = player.PlayerData?.money[accountType] or 0
+    return balance
+end
+
 ---This will add money to the player by account type
 ---@param source number
 ---@param accountType 'cash' | 'bank'
@@ -341,6 +354,31 @@ Framework.AddAccountBalance = function(source, accountType, amount)
     return player.Functions.AddMoney(accountType, amount)
 end
 
+---This will return the job account money by account type
+---@param accountId string | number
+---@return number
+Framework.GetJobAccountBalance = function(accountId)
+    return 0, print('QBX does not provide a "GetJobAccountBalance" function')
+end
+
+---This will add money to the job account by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.AddJobAccountBalance = function(accountId, amount, reason)
+    return false, print('QBX does not provide a "AddJobAccountBalance" function')
+end
+
+---This will remove the job account money by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.RemoveJobAccountBalance = function(accountId, amount, reason)
+    return false, print('QBX does not provide a "RemoveJobAccountBalance" function')
+end
+
 ---This will remove the players money by account type
 ---@param source number
 ---@param accountType 'cash' | 'bank'
@@ -354,19 +392,6 @@ Framework.RemoveAccountBalance = function(source, accountType, amount)
     if accountType == 'money' then accountType = 'cash' end
 
     return player.Functions.RemoveMoney(accountType, amount)
-end
-
----This will return the players money by account type
----@param source number
----@param accountType 'cash' | 'bank'
----@return number
-Framework.GetAccountBalance = function(source, accountType)
-    local player = Framework.GetPlayerFromId(source)
-    if not player then return 0 end
-
-    if accountType == 'money' then accountType = 'cash' end
-    local balance = player.PlayerData?.money[accountType] or 0
-    return balance
 end
 
 -- [[ Event Related ]] --

@@ -310,19 +310,32 @@ end
 
 -- [[ Account Related ]] --
 
+---This will return the players money by account type
+---@param source number
+---@param accountType 'money' | 'bank'
+---@return number
+Framework.GetPlayerAccountBalance = function(source, accountType)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return 0 end
+
+    if accountType == 'cash' then accountType = 'money' end
+    local balance = Framework.GetAccountBalance(source, accountType)
+    return balance
+end
+
 ---This will add money to the player by account type
 ---@param source number
 ---@param accountType 'money' | 'bank'
 ---@param amount number
 ---@return boolean
-Framework.AddAccountBalance = function(source, accountType, amount)
+Framework.AddPlayerAccountBalance = function(source, accountType, amount)
     local player = Framework.GetPlayerFromId(source)
     if not player then return false end
 
     if amount <= 0 then return false end
     if accountType == 'cash' then accountType = 'money' end
 
-    player.addAccountMoney(accountType, amount)
+    player.AddAccountBalance(accountType, amount)
     return true
 end
 
@@ -331,7 +344,7 @@ end
 ---@param accountType 'money' | 'bank'
 ---@param amount number
 ---@return boolean
-Framework.RemoveAccountBalance = function(source, accountType, amount)
+Framework.RemovePlayerAccountBalance = function(source, accountType, amount)
     local player = Framework.GetPlayerFromId(source)
     if not player then return false end
 
@@ -341,21 +354,33 @@ Framework.RemoveAccountBalance = function(source, accountType, amount)
     local balance = Framework.GetAccountBalance(source, accountType)
     if balance < amount then return false end
 
-    player.removeAccountMoney(accountType, amount)
+    player.RemoveAccountBalance(accountType, amount)
     return true
 end
 
----This will return the players money by account type
----@param source number
----@param accountType 'money' | 'bank'
+---This will return the job account money by account type
+---@param accountId string | number
 ---@return number
-Framework.GetAccountBalance = function(source, accountType)
-    local player = Framework.GetPlayerFromId(source)
-    if not player then return 0 end
+Framework.GetJobAccountBalance = function(accountId)
+    return 0, print('ESX does not provide a "GetJobAccountBalance" function')
+end
 
-    if accountType == 'cash' then accountType = 'money' end
-    local balance = Framework.GetAccountBalance(source, accountType)
-    return balance
+---This will add money to the job account by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.AddJobAccountBalance = function(accountId, amount, reason)
+    return false, print('ESX does not provide a "AddJobAccountBalance" function')
+end
+
+---This will remove the job account money by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.RemoveJobAccountBalance = function(accountId, amount, reason)
+    return false, print('ESX does not provide a "RemoveJobAccountBalance" function')
 end
 
 -- [[ Event Related ]] --

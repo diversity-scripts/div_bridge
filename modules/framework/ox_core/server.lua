@@ -245,6 +245,22 @@ end
 
 -- [[ Account Related ]] --
 
+---This will return the players money by account type
+---@param source number
+---@param accountType 'bank'
+---@return number
+Framework.GetAccountBalance = function(source, accountType)
+    local player = Framework.GetPlayerFromId(source)
+    if not player then return 0 end
+
+    if accountType == 'money' or accountType == 'cash' then
+        return 0, print('ox_core does not support "cash" accounts.')
+    end
+
+    local account = Ox.GetCharacterAccount(player.charId)
+    return account?.balance or 0
+end
+
 ---This will add money to the player by account type
 ---@param source number
 ---@param accountType 'cash' | 'bank'
@@ -285,20 +301,34 @@ Framework.RemoveAccountBalance = function(source, accountType, amount)
     return retval?.success or false
 end
 
----This will return the players money by account type
----@param source number
----@param accountType 'bank'
+---This will return the job account money by account type
+---@param accountId string | number
 ---@return number
-Framework.GetAccountBalance = function(source, accountType)
-    local player = Framework.GetPlayerFromId(source)
-    if not player then return 0 end
-
-    if accountType == 'money' or accountType == 'cash' then
-        return 0, print('ox_core does not support "cash" accounts.')
-    end
-
-    local account = Ox.GetCharacterAccount(player.charId)
+Framework.GetJobAccountBalance = function(accountId)
+    local account = Ox.GetGroupAccount(accountId)
     return account?.balance or 0
+end
+
+---This will add money to the job account by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.AddJobAccountBalance = function(accountId, amount, reason)
+    local account = Ox.GetGroupAccount(accountId)
+    local retval = account?.addBalance({ amount = amount, message = reason or nil }) or nil
+    return retval?.success or false
+end
+
+---This will remove the job account money by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.RemoveJobAccountBalance = function(accountId, amount, reason)
+    local account = Ox.GetGroupAccount(accountId)
+    local retval = account?.removeBalance({ amount = amount, message = reason or nil, overdraw = false }) or nil
+    return retval?.success or false
 end
 
 -- [[ Event Related ]] --

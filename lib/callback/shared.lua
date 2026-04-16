@@ -20,14 +20,16 @@ local function handleResponse(registry, callbackId, ...)
 
     if data.timer then math.randomseed(GetGameTimer()) end
 
+    local args = {...}
+
     if data.callback then
         CreateThread(function()
-            data.callback(...)
+            data.callback(table.unpack(args))
         end)
     end
 
     if data.promise then
-        data.promise:resolve({ ... })
+        data.promise:resolve(args)
     end
 
     registry[callbackId] = nil

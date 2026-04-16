@@ -109,100 +109,100 @@ Framework.RegisterUsableItem = function(itemName, cb)
 
 end
 
----@param source number (unused)
----@param itemName string (unused)
----@param itemCount number (unused)
----@param metadata? table (unused)
----@param slot? number (unused)
+---@param source number
+---@param itemName string
+---@param itemCount number
+---@param metadata? table
+---@param slot? number
 ---@return boolean
 Framework.AddItem = function(source, itemName, itemCount, metadata, slot)
     return false
 end
 
----@param source number (unused)
----@param itemName string (unused)
----@param itemCount number (unused)
----@param metadata? table (unused)
----@param slot? number (unused)
+---@param source number
+---@param itemName string
+---@param itemCount number
+---@param metadata? table
+---@param slot? number
 ---@return boolean
 Framework.RemoveItem = function(source, itemName, itemCount, metadata, slot)
     return false
 end
 
----@param source number (unused)
----@param itemName string (unused)
----@param itemCount number (unused)
----@param metadata? table (unused)
+---@param source number
+---@param itemName string
+---@param itemCount number
+---@param metadata? table
 ---@return boolean
 Framework.CanCarryItem = function(source, itemName, itemCount, metadata)
     return false
 end
 
----@param source number (unused)
----@param items string | string[] (unused)
+---@param source number
+---@param items string | string[]
 ---@return number
 Framework.GetItemCount = function(source, items)
     return 0
 end
 
----@param source number (unused)
----@param items string | string[] (unused)
----@param itemCount number (unused)
+---@param source number
+---@param items string | string[]
+---@param itemCount number
 ---@return boolean
 Framework.HasItem = function(source, items, itemCount)
     return false
 end
 
----@param source number (unused)
----@param itemName string (unused)
----@param metadata? table (unused)
----@param slot? number (unused)
+---@param source number
+---@param itemName string
+---@param metadata? table
+---@param slot? number
 ---@return table
 Framework.GetItemData = function(source, itemName, metadata, slot)
     return {}
 end
 
----@param source number (unused)
----@param itemName string (unused)
----@param metadata? table (unused)
----@param slot? number (unused)
+---@param source number
+---@param itemName string
+---@param metadata? table
+---@param slot? number
 ---@return table
 Framework.GetItemByName = function(source, itemName, metadata, slot)
     return {}
 end
 
----@param source number (unused)
----@param slot number (unused)
+---@param source number
+---@param slot number
 ---@return table
 Framework.GetItemBySlot = function(source, slot)
     return {}
 end
 
----@param source number (unused)
+---@param source number
 ---@return table
 Framework.GetPlayerInventory = function(source)
     return {}
 end
 
----@param source number (unused)
+---@param source number
 Framework.ClearPlayerInventory = function(source)
 
 end
 
----@param source number (unused)
----@param slot number (unused)
----@param metadata table (unused)
+---@param source number
+---@param slot number
+---@param metadata table
 Framework.SetMetadata = function(source, slot, metadata)
     return {}
 end
 
----@param itemName string (unused)
+---@param itemName string
 ---@return string
 Framework.GetItemLabel = function(itemName)
     return ''
 end
 
----@param itemName? string (unused)
+---@param itemName? string
 ---@return table
 Framework.Items = function(itemName)
     return {}
@@ -210,12 +210,20 @@ end
 
 -- [[ Account Related ]] --
 
+---This will return the players money by account type
+---@param source number
+---@param accountType 'bank'
+---@return number
+Framework.GetPlayerAccountBalance = function(source, accountType)
+    return 0
+end
+
 ---This will add money to the player by account type
 ---@param source number
 ---@param accountType 'cash' | 'bank'
 ---@param amount number
 ---@return boolean
-Framework.AddAccountBalance = function(source, accountType, amount)
+Framework.AddPlayerAccountBalance = function(source, accountType, amount)
     return false
 end
 
@@ -224,16 +232,33 @@ end
 ---@param accountType 'cash' | 'bank'
 ---@param amount number
 ---@return boolean
-Framework.RemoveAccountBalance = function(source, accountType, amount)
+Framework.RemovePlayerAccountBalance = function(source, accountType, amount)
     return false
 end
 
----This will return the players money by account type
----@param source number
----@param accountType 'bank'
+---This will return the job account money by account type
+---@param accountId string | number
 ---@return number
-Framework.GetAccountBalance = function(source, accountType)
+Framework.GetJobAccountBalance = function(accountId)
     return 0
+end
+
+---This will add money to the job account by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.AddJobAccountBalance = function(accountId, amount, reason)
+    return false
+end
+
+---This will remove the job account money by account type
+---@param accountId string | number
+---@param amount number
+---@param reason? string
+---@return boolean
+Framework.RemoveJobAccountBalance = function(accountId, amount, reason)
+    return false
 end
 
 -- [[ Event Related ]] --

@@ -107,33 +107,6 @@ Math.HexToRGBA = function(input)
         error('Invalid hex color')
     end
 end
-    local s = input:gsub('#', ''):upper()
-    if #s == 3 then
-        local r = tonumber(s:sub(1, 1) .. s:sub(1, 1), 16)
-        local g = tonumber(s:sub(2, 2) .. s:sub(2, 2), 16)
-        local b = tonumber(s:sub(3, 3) .. s:sub(3, 3), 16)
-        return r, g, b, 255
-    elseif #s == 4 then
-        local r = tonumber(s:sub(1, 1) .. s:sub(1, 1), 16)
-        local g = tonumber(s:sub(2, 2) .. s:sub(2, 2), 16)
-        local b = tonumber(s:sub(3, 3) .. s:sub(3, 3), 16)
-        local a = tonumber(s:sub(4, 4) .. s:sub(4, 4), 16)
-        return r, g, b, a
-    elseif #s == 6 then
-        local r = tonumber(s:sub(1, 2), 16)
-        local g = tonumber(s:sub(3, 4), 16)
-        local b = tonumber(s:sub(5, 6), 16)
-        return r, g, b, 255
-    elseif #s == 8 then
-        local r = tonumber(s:sub(1, 2), 16)
-        local g = tonumber(s:sub(3, 4), 16)
-        local b = tonumber(s:sub(5, 6), 16)
-        local a = tonumber(s:sub(7, 8), 16)
-        return r, g, b, a
-    else
-        error('Invalid hex color')
-    end
-end
 
 ---Converts a normalized vector3 to a rotation vector
 ---@param input vector3 The normalized vector3 to convert
