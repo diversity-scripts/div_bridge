@@ -165,11 +165,6 @@ Inventory.GetItemLabel = function(itemName)
     return origen_inventory:getItemLabel(itemName) or itemName
 end
 
----@param itemName string Item name
----@return string
-Inventory.GetItemLabel = function(itemName)
-    return Inventory.GetItemLabel(itemName)
-end
 ---@param itemName? string Item name (optional)
 ---@return table
 Inventory.Items = function(itemName)

@@ -16,7 +16,7 @@ Config.Framework = 'auto'
 -- INVENTORY
 -- Change to 'none' to disable the module
 ------------------------
--- none | auto | framework | ox_inventory | qb-inventory | qs-inventory | origen_inventory | tgiann-inventory | codem-inventory | core_inventory | ps-inventory | ak47_inventory | custom
+-- none | auto | framework | ox_inventory | qb-inventory | qs-inventory | origen_inventory | tgiann-inventory | codem-inventory | core_inventory | ps-inventory | ak47_inventory | jaksam_inventory | custom
 Config.Inventory = 'auto'
 
 -- DATABASE

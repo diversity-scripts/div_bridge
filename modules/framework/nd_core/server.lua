@@ -330,28 +330,21 @@ end
 ---@param character table Player data
 AddEventHandler('ND:characterLoaded', function(character)
     local src = character.source or source
-    TriggerEvent('div_bridge/server/OnPlayerLoaded', src)
+    TriggerEvent('div_bridge:server:OnPlayerLoaded', src)
 end)
 
 ---Event handler for when player logs out
 ---@param src number
 AddEventHandler('ND:characterUnloaded', function(src)
     src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+    TriggerEvent('div_bridge:server:OnPlayerUnloaded', src)
 end)
 
 ---Event handler for when player job is updated
 ---@param character table Player data
 RegisterNetEvent('ND:updateCharacter', function(character)
     local src = character.source or source
-    if not character.job then return end
-    TriggerEvent('div_bridge/server/OnPlayerJobChange', src, character.job)
-end)
-
----Event handler for when a player disconnects from the server
-AddEventHandler('playerDropped', function()
-    local src = source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+    TriggerEvent('div_bridge:server:OnPlayerJobChange', { playerId = src, name = character.job, label = character.jobInfo?.label, grade = character.jobInfo?.rank, gradeLabel = character.jobInfo?.rankName })
 end)
 
 return Framework

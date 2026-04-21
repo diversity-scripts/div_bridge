@@ -182,12 +182,12 @@ end
 ---Event handler for when player is loaded in
 RegisterNetEvent('TMC:Client:OnPlayerLoaded', function()
     Wait(1500)
-    TriggerEvent('div_bridge/client/OnPlayerLoaded')
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
 end)
 
 ---Event handler for when player logs out
 RegisterNetEvent('TMC:Client:OnPlayerUnloaded', function()
-    TriggerEvent('div_bridge/client/OnPlayerUnload')
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
 end)
 
 return Framework

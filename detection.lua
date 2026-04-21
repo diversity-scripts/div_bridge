@@ -22,6 +22,7 @@ local function getInventory(framework)
     if GetResourceState('core_inventory') == 'started' then return 'core_inventory' end
     if GetResourceState('ps-inventory') == 'started' then return 'ps-inventory' end
     if GetResourceState('ak47_inventory') == 'started' then return 'ak47_inventory' end
+    if GetResourceState('jaksam_inventory') == 'started' then return 'jaksam_inventory' end
     if framework ~= 'none' and framework ~= 'custom' then return 'framework' end
     return 'none'
 end

@@ -184,22 +184,22 @@ end
 ---Event handler for when player is loaded in
 RegisterNetEvent('ox:playerLoaded', function()
     Wait(1500)
-    TriggerEvent('div_bridge/client/OnPlayerLoaded')
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
 end)
 
 ---Event handler for when player logs out
 RegisterNetEvent('ox:playerLogout', function()
-    TriggerEvent('div_bridge/client/OnPlayerUnload')
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
 end)
 
 ---Event handler for when player job is updated
----@param groupName string Group name
----@param grade? number Group grade
+---@param groupName string
+---@param grade? number
 RegisterNetEvent('ox:setGroup', function(groupName, grade)
     local data = GlobalState[('group.%s'):format(groupName)]
     local label = data?.label or 'N/A'
-    local gradeLabel = data?.grades[grade]?.label or 'N/A'
-    TriggerEvent('div_bridge/client/OnPlayerJobUpdate', groupName, label, gradeLabel, grade)
+    local gradeLabel = grade and data?.grades[grade]?.label or 0
+    TriggerEvent('div_bridge:client:OnPlayerJobUpdate', { name = groupName, label = label, grade = grade or 0, gradeLabel = gradeLabel })
 end)
 
 return Framework

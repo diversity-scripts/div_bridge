@@ -188,20 +188,18 @@ end
 ---Event handler for when player is loaded in
 AddEventHandler('ND:characterLoaded', function()
     Wait(1500)
-    TriggerEvent('div_bridge/client/OnPlayerLoaded')
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
 end)
 
 ---Event handler for when player logs out
 AddEventHandler('ND:characterUnloaded', function()
-    TriggerEvent('div_bridge/client/OnPlayerUnload')
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
 end)
 
 ---Event handler for when player job is updated
 ---@param character table Player data
 AddEventHandler('ND:updateCharacter', function(character)
-    if not character.job or not character.jobInfo then return end
-    local jobInfo = character.jobInfo
-    TriggerEvent('div_bridge/client/OnPlayerJobUpdate', character.job, jobInfo.label, jobInfo.rankName, jobInfo.rank)
+    TriggerEvent('div_bridge:client:OnPlayerJobUpdate', { name = character.job, label = character.jobInfo?.label, grade = character.jobInfo?.rank, gradeLabel = character.jobInfo?.rankName })
 end)
 
 return Framework

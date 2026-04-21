@@ -189,18 +189,18 @@ end
 ---Event handler for when player is loaded in
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     Wait(1500)
-    TriggerEvent('div_bridge/client/OnPlayerLoaded')
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
 end)
 
 ---Event handler for when player logs out
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    TriggerEvent('div_bridge/client/OnPlayerUnload')
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
 end)
 
 ---Event handler for when player job is updated
----@param data table Job data containing name, label, grade_label, and grade
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(data)
-    TriggerEvent('div_bridge/client/OnPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
+---@param data table
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(src, data)
+    TriggerEvent('div_bridge:client:OnPlayerJobUpdate', { name = data.name, label = data.label, grade = data.grade.level, gradeLabel = data.grade.name })
 end)
 
 return Framework

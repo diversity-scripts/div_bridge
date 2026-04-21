@@ -334,32 +334,29 @@ end
 -- [[ Event Related ]] --
 
 ---Event handler for when player is loaded in
----@param src number
-RegisterNetEvent('QBCore:Server:OnPlayerLoaded', function(src)
-    src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerLoaded', src)
+---@param playerId number
+RegisterNetEvent('ox:playerLoaded', function(playerId)
+    src = playerId or source
+    TriggerEvent('div_bridge:server:OnPlayerLoaded', playerId)
 end)
 
 ---Event handler for when player logs out
----@param src number
-RegisterNetEvent('QBCore:Server:OnPlayerUnload', function(src)
-    src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+---@param playerId number
+RegisterNetEvent('ox:playerLogout', function(playerId)
+    src = playerId or source
+    TriggerEvent('div_bridge:server:OnPlayerUnloaded', playerId)
 end)
 
 ---Event handler for when player job is updated
----@param src number
----@param job table
-RegisterNetEvent('QBCore:Server:OnJobUpdate', function(src, job)
-    src = src or source
-    if not job then return end
-    TriggerEvent('div_bridge/server/OnPlayerJobChange', src, job.name)
-end)
-
----Event handler for when a player disconnects from the server
-AddEventHandler('playerDropped', function()
-    local src = source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+---@param playerId number
+---@param groupName string
+---@param grade? number
+RegisterNetEvent('ox:setGroup', function(playerId, groupName, grade)
+    src = playerId or source
+    local data = GlobalState[('group.%s'):format(groupName)]
+    local label = data?.label or 'N/A'
+    local gradeLabel = grade and data?.grades[grade]?.label or 0
+    TriggerEvent('div_bridge:server:OnPlayerJobChange', { playerId = playerId, name = groupName, label = label, grade = grade or 0, gradeLabel = gradeLabel })
 end)
 
 return Framework

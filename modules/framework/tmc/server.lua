@@ -338,20 +338,14 @@ end
 ---@param src number
 RegisterNetEvent('TMC:Server:OnPlayerLoaded', function(src)
     src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerLoaded', src)
+    TriggerEvent('div_bridge:server:OnPlayerLoaded', src)
 end)
 
 ---Event handler for when player logs out
 ---@param src number
 RegisterNetEvent('TMC:Server:OnPlayerUnLoaded', function(src)
     src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
-end)
-
----Event handler for when a player disconnects from the server
-AddEventHandler('playerDropped', function()
-    local src = source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+    TriggerEvent('div_bridge:server:OnPlayerUnloaded', src)
 end)
 
 return Framework

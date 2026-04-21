@@ -192,18 +192,23 @@ end
 ---Event handler for when player is loaded in
 RegisterNetEvent('esx:playerLoaded', function()
     Wait(1500)
-    TriggerEvent('div_bridge/client/OnPlayerLoaded')
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
 end)
 
 ---Event handler for when player logs out
 RegisterNetEvent('esx:onPlayerLogout', function()
-    TriggerEvent('div_bridge/client/OnPlayerUnload')
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
+end)
+
+---Event handler for when player disconnects from the server
+RegisterNetEvent('esx:playerDropped', function()
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
 end)
 
 ---Event handler for when player job is updated
----@param data table Job data containing name, label, grade_label, and grade
+---@param data table
 RegisterNetEvent('esx:setJob', function(data)
-    TriggerEvent('div_bridge/client/OnPlayerJobUpdate', data.name, data.label, data.grade_label, data.grade)
+    TriggerEvent('div_bridge:client:OnPlayerJobUpdate', { name = data.name, label = data.label, grade = data.grade, gradeLabel = data.grade_label })
 end)
 
 return Framework

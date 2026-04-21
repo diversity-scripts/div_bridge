@@ -17,8 +17,7 @@ end
 ---@param itemCount number Item count
 ---@return boolean
 Inventory.HasItem = function(itemName, itemCount)
-    local result = origen_inventory:HasItem(itemName) or 0
-    return result >= (itemCount or 1)
+    return origen_inventory:HasItem(itemName) or false
 end
 
 ---@return table

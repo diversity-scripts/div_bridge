@@ -400,14 +400,14 @@ end
 ---@param src number
 RegisterNetEvent('QBCore:Server:OnPlayerLoaded', function(src)
     src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerLoaded', src)
+    TriggerEvent('div_bridge:server:OnPlayerLoaded', src)
 end)
 
 ---Event handler for when player logs out
 ---@param src number
 RegisterNetEvent('QBCore:Server:OnPlayerUnload', function(src)
     src = src or source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+    TriggerEvent('div_bridge:server:OnPlayerUnloaded', src)
 end)
 
 ---Event handler for when player job is updated
@@ -415,14 +415,7 @@ end)
 ---@param job table
 RegisterNetEvent('QBCore:Server:OnJobUpdate', function(src, job)
     src = src or source
-    if not job then return end
-    TriggerEvent('div_bridge/server/OnPlayerJobChange', src, job.name)
-end)
-
----Event handler for when a player disconnects from the server
-AddEventHandler('playerDropped', function()
-    local src = source
-    TriggerEvent('div_bridge/server/OnPlayerUnload', src)
+    TriggerEvent('div_bridge:server:OnPlayerJobChange', { playerId = src, name = job.name, label = job.label, grade = job.grade.level, gradeLabel = job.grade.name })
 end)
 
 return Framework

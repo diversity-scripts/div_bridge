@@ -70,12 +70,44 @@ local function loadModuleFile(moduleName)
         if fn then
             local result = fn()
             rawset(Bridge, moduleName, result or {})
+            debugPrint(('^2Successfully loaded module: %s (%s)^0'):format(moduleName, moduleType))
             return result
         else
             print(("^1[div_bridge] Error in module %s (%s): %s^0"):format(moduleName, finalPath, err))
         end
+    else
+        if moduleType ~= 'none' then
+            local otherContext = context == 'server' and 'client' or 'server'
+            local otherPath = ('modules/%s/%s/%s.lua'):format(moduleDir, moduleType, otherContext)
+            if LoadResourceFile(bridgeResName, otherPath) then
+                debugPrint(('^3Module %s (%s) exists only in %s context^0'):format(moduleName, moduleType, otherContext))
+            else
+                debugPrint(('^3Could not find files for module: %s (%s)^0'):format(moduleName, moduleType))
+            end
+        else
+            debugPrint(('^8Module %s is disabled (none)^0'):format(moduleName))
+        end
     end
     return nil
+end
+
+local function getModuleStatus(name, moduleType)
+    if moduleType == 'none' then
+        return "^8DISABLED^0"
+    end
+
+    if type(rawget(Bridge, name)) == 'table' then
+        return "^2LOADED^0"
+    end
+
+    local moduleDir = name:lower()
+    local otherContext = context == 'server' and 'client' or 'server'
+    local otherPath = ('modules/%s/%s/%s.lua'):format(moduleDir, moduleType, otherContext)
+    if LoadResourceFile(bridgeResName, otherPath) then
+        return otherContext == 'client' and "^3CLIENT_ONLY^0" or "^3SERVER_ONLY^0"
+    end
+
+    return "^1MISSING/ERROR^0"
 end
 
 local function hasModule(name)
@@ -102,8 +134,13 @@ local function initialize()
     Bridge.loadOxLib = loadOxLib
     Bridge.HasModule = hasModule
 
+    -- Explicitly load the Framework module first so other modules can rely on it during their initialization
+    if Bridge.config.Framework and Bridge.config.Framework ~= 'none' then
+        loadModuleFile('Framework')
+    end
+
     for key, value in pairs(Bridge.config) do
-        if type(value) == 'string' and key ~= 'Debug' then
+        if type(value) == 'string' and key ~= 'Debug' and key ~= 'Language' and key ~= 'Framework' then
             loadModuleFile(key)
         end
     end
@@ -118,9 +155,7 @@ local function createDummyProxy(name)
             return createDummyProxy(name .. '.' .. tostring(key))
         end,
         __call = function(...)
-            if Bridge.config.Debug then
-                print(("^1[div_bridge] Attempted to call non-existent module/function: %s^0"):format(name))
-            end
+            debugPrint(("^1Attempted to call non-existent module/function: %s^0"):format(name))
             return nil
         end
     })
@@ -132,9 +167,7 @@ setmetatable(Bridge, {
         local mod = loadModuleFile(key)
         if mod then return mod end
 
-        local dummy = createDummyProxy(tostring(key))
-        rawset(self, key, dummy)
-        return dummy
+        return createDummyProxy(tostring(key))
     end
 })
 
@@ -152,3 +185,19 @@ if Bridge.config.Debug then
 end
 
 _G.dBridge = Bridge
+
+if context == 'server' then
+    RegisterCommand('bridgestatus', function(source, args, rawCommand)
+        local prefix = "^3[div_bridge]^0"
+        print(prefix .. " ^2=== Diversity Bridge Status ===^0")
+        print(prefix .. " Context: ^5" .. context .. "^0 | Debug: " .. (Bridge.config.Debug and "^2Enabled^0" or "^8Disabled^0"))
+        
+        for key, value in pairs(Bridge.config) do
+            if type(value) == 'string' and key ~= 'Debug' and key ~= 'Language' then
+                local status = getModuleStatus(key, value)
+                print(prefix .. string.format(" %s: ^7%s^0 [%s]", key, value, status))
+            end
+        end
+        print(prefix .. " ^2===============================^0")
+    end, true)
+end
