@@ -98,10 +98,10 @@ Streaming.RequestAudioBank = function(audioBank, timeout)
     local start = GetGameTimer()
     while true do
         if GetGameTimer() - start > timeout then
-            error(('Failed to load scaleformName "%s"'):format(scaleformName))
+            error(('Failed to load audioBank "%s"'):format(audioBank))
         end
 
-        if RequestScriptAudioBank(audioBank, false) then return end
+        if RequestScriptAudioBank(audioBank, false) then return audioBank end
         Wait(0)
     end
 

@@ -72,10 +72,22 @@ end
 -- SERVER SIDE
 if IsDuplicityVersion() then
     function Callback.RegisterServer(name, handler)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
+        if type(handler) ~= 'function' then
+            error(('Expected handler to have type "function" (received %s)'):format(type(handler)))
+        end
         Callback[name] = handler
     end
 
     function Callback.TriggerClient(name, target, ...)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
+        if type(target) ~= 'number' and type(target) ~= 'table' then
+            error(('Expected target to have type "number or table" (received %s)'):format(type(target)))
+        end
         local args = { ... }
         local delay, callback
         if type(args[1]) == 'number' then
@@ -95,6 +107,12 @@ if IsDuplicityVersion() then
 
     -- Await a response from a specific client and return the values (yields current coroutine)
     function Callback.AwaitClient(name, target, ...)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
+        if type(target) ~= 'number' and type(target) ~= 'table' then
+            error(('Expected target to have type "number or table" (received %s)'):format(type(target)))
+        end
         local args = { ... }
         -- no callback passed so this will yield until the promise resolves
         return triggerCallback(EVENT_NAMES.SERVER_TO_CLIENT, target, name, args, nil)
@@ -126,10 +144,19 @@ else -- CLIENT SIDE
     local ClientCallbacks = {}
 
     function Callback.RegisterClient(name, handler)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
+        if type(handler) ~= 'function' then
+            error(('Expected handler to have type "function" (received %s)'):format(type(handler)))
+        end
         ClientCallbacks[name] = handler
     end
 
     function Callback.TriggerServer(name, ...)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
         local args = { ... }
         local delay, callback
         if type(args[1]) == 'number' then
@@ -149,6 +176,9 @@ else -- CLIENT SIDE
 
     -- Await a response from the server and return the values (yields current coroutine)
     function Callback.AwaitServer(name, ...)
+        if type(name) ~= 'string' then
+            error(('Expected name to have type "string" (received %s)'):format(type(name)))
+        end
         local args = { ... }
         return triggerCallback(EVENT_NAMES.CLIENT_TO_SERVER, nil, name, args, nil)
     end

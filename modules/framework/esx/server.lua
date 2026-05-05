@@ -319,8 +319,8 @@ Framework.GetPlayerAccountBalance = function(source, accountType)
     if not player then return 0 end
 
     if accountType == 'cash' then accountType = 'money' end
-    local balance = Framework.GetAccountBalance(source, accountType)
-    return balance
+    local account = player.getAccount(accountType)
+    return account and account.money or 0
 end
 
 ---This will add money to the player by account type

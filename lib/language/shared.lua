@@ -115,4 +115,9 @@ Language.Clear = function(key)
     cache[res] = nil
 end
 
+---@return string locale The current locale code (e.g. 'en', 'fr')
+Language.GetLocale = function()
+    return getLanguage()
+end
+
 return Language

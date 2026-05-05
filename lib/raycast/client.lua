@@ -59,6 +59,13 @@ end
 ---@return vector3 surfaceNormal
 ---@return number materialHash
 Raycast.FromCoords = function(coords, destination, flags, ignore, ignoreEntity)
+    if type(coords) ~= 'vector3' then
+        error(('Expected coords to have type "vector3" (received %s)'):format(type(coords)))
+    end
+    if type(destination) ~= 'vector3' then
+        error(('Expected destination to have type "vector3" (received %s)'):format(type(destination)))
+    end
+
     local handle = StartShapeTestLosProbe(coords.x, coords.y, coords.z, destination.x, destination.y, destination.z, flags or 511, ignoreEntity or cache.ped, ignore or 4)
     local retval, hit, endCoords, surfaceNormal, material, entityHit = 1, nil, nil, nil, nil, nil
     
@@ -76,6 +83,10 @@ end
 ---@param ignore ShapetestIgnore? Defaults to 4.
 ---@param ignoreEntity number? Defaults to playerPed.
 Raycast.FromCamera = function(distance, flags, ignore, ignoreEntity)
+    if distance ~= nil and type(distance) ~= 'number' then
+        error(('Expected distance to have type "number" (received %s)'):format(type(distance)))
+    end
+
     distance = distance or 10
     local coords = GetFinalRenderedCamCoord()
     local destination = coords + getForwardVector() * distance

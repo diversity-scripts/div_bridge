@@ -68,19 +68,18 @@ Framework.GetPlayerJob = function(source)
     if not player then return { name = '', label = '', grade = 0, gradeLabel = '' } end
 
     local activeGroup = player.get('activeGroup')
-    local grade = player.getGroup(activeGroup)
-    local groupData = activeGroup and GlobalState[('group.%s'):format(activeGroup)]
+    if not activeGroup then
+        return { name = '', label = '', grade = 0, gradeLabel = '' }
+    end
 
-    return activeGroup and {
+    local grade = player.getGroup(activeGroup)
+    local groupData = GlobalState[('group.%s'):format(activeGroup)]
+
+    return {
         name = activeGroup,
         label = groupData?.label or '',
         grade = grade or 0,
         gradeLabel = groupData?.grades[grade]?.label or '',
-    } or {
-        name = '',
-        label = '',
-        grade = 0,
-        gradeLabel = '',
     }
 end
 

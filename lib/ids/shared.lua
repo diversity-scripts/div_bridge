@@ -27,6 +27,20 @@ end
 ---@param pattern? string | nil Defaults to alphanumeric (optional)
 ---@return string
 Ids.CreateUniqueId = function(tbl, len, pattern)
+    if tbl ~= nil and type(tbl) ~= 'table' then
+        error(('Expected tbl to have type "table" (received %s)'):format(type(tbl)))
+    end
+    if len ~= nil then
+        if type(len) ~= 'number' then
+            error(('Expected len to have type "number" (received %s)'):format(type(len)))
+        elseif len <= 0 or len ~= math.floor(len) then
+            error(('Expected len to be a positive integer (received %s)'):format(tostring(len)))
+        end
+    end
+    if pattern ~= nil and type(pattern) ~= 'string' then
+        error(('Expected pattern to have type "string" (received %s)'):format(type(pattern)))
+    end
+
     tbl = tbl or {}
     len = len or 8
     ensureSeed()

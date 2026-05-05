@@ -90,11 +90,13 @@ end
 ---@param tbl table The table to clone
 ---@return table
 local function deepClone(tbl)
-    if type(tbl) ~= 'table' then return error('Value must be a table') end
+    if type(tbl) ~= 'table' then return tbl end
 
     tbl = table.clone(tbl)
     for k, v in pairs(tbl) do
-        tbl[k] = deepClone(v)
+        if type(v) == 'table' then
+            tbl[k] = deepClone(v)
+        end
     end
 
     return tbl
@@ -106,6 +108,8 @@ end
 ---@param override? boolean Whether to override existing keys in tbl1 with tbl2's values
 ---@return table
 local function tableMerge(tbl1, tbl2, override)
+    if type(tbl1) ~= 'table' then error(('Expected tbl1 to have type "table" (received %s)'):format(type(tbl1))) end
+    if type(tbl2) ~= 'table' then error(('Expected tbl2 to have type "table" (received %s)'):format(type(tbl2))) end
     override = override == nil or override
     for k, v2 in pairs(tbl2) do
         local v1 = tbl1[k]
