@@ -4,7 +4,7 @@ lua54 'yes'
 
 author 'Diversity'
 description 'Bridge resource for scripts'
-version '1.0.3'
+version '1.0.4'
 
 files {
     'config.lua',
