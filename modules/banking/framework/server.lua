@@ -1,14 +1,6 @@
 local Banking = {}
 
-local function getFramework()
-    local framework = Bridge.Framework
-    if type(framework) ~= 'table' then
-        error('Banking: Bridge.Framework failed to load or is invalid. Please check your config.')
-    end
-    return framework
-end
-
-local framework = getFramework()
+local framework = dBridge.getFramework('Banking')
 
 ---@return string
 Banking.GetResourceName = function()

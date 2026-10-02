@@ -1,10 +1,17 @@
+--[[
+    Adapted from ox_lib (https://github.com/overextended/ox_lib)
+    This file is licensed under LGPL-3.0 or higher <https://www.gnu.org/licenses/lgpl-3.0.en.html>
+    Copyright © 2025 Linden <https://github.com/thelindat>
+
+    Adapted for div_bridge: namespaced Raycast module (dLib.raycast), native trig
+    for the forward vector instead of glm, an ignoreEntity parameter, and a probe
+    timeout.
+]]
+
 local Raycast = {}
 
 local StartShapeTestLosProbe = StartShapeTestLosProbe
 local GetShapeTestResultIncludingMaterial = GetShapeTestResultIncludingMaterial
-local StartShapeTestRay = StartShapeTestRay
-local GetShapeTestResult = GetShapeTestResult
-local math_abs = math.abs
 local GetFinalRenderedCamCoord = GetFinalRenderedCamCoord
 local GetFinalRenderedCamRot = GetFinalRenderedCamRot
 
@@ -28,24 +35,19 @@ local GetFinalRenderedCamRot = GetFinalRenderedCamRot
 ---| 511 INCLUDE_ALL
 
 local function getForwardVector()
-    local camRot = rotation or GetFinalRenderedCamRot(2)
+    local camRot = GetFinalRenderedCamRot(2)
 
+    -- Only pitch (x) and yaw (z) affect the look direction; roll (y) is ignored.
     local rx = math.rad(camRot.x)
-    local ry = math.rad(camRot.y)
     local rz = math.rad(camRot.z)
 
-    local sx = math.sin(rx)
     local cx = math.cos(rx)
-    local sy = math.sin(ry)
-    local cy = math.cos(ry)
-    local sz = math.sin(rz)
-    local cz = math.cos(rz)
 
-    local x = -sz * math.abs(cx)
-    local y = cz * math.abs(cx)
-    local z = sx
-
-    return vector3(x, y, z)
+    return vector3(
+        -math.sin(rz) * math.abs(cx),
+        math.cos(rz) * math.abs(cx),
+        math.sin(rx)
+    )
 end
 
 ---@param coords vector3
@@ -58,7 +60,7 @@ end
 ---@return vector3 endCoords
 ---@return vector3 surfaceNormal
 ---@return number materialHash
-Raycast.FromCoords = function(coords, destination, flags, ignore, ignoreEntity)
+Raycast.fromCoords = function(coords, destination, flags, ignore, ignoreEntity)
     if type(coords) ~= 'vector3' then
         error(('Expected coords to have type "vector3" (received %s)'):format(type(coords)))
     end
@@ -66,7 +68,7 @@ Raycast.FromCoords = function(coords, destination, flags, ignore, ignoreEntity)
         error(('Expected destination to have type "vector3" (received %s)'):format(type(destination)))
     end
 
-    local handle = StartShapeTestLosProbe(coords.x, coords.y, coords.z, destination.x, destination.y, destination.z, flags or 511, ignoreEntity or cache.ped, ignore or 4)
+    local handle = StartShapeTestLosProbe(coords.x, coords.y, coords.z, destination.x, destination.y, destination.z, flags or 511, ignoreEntity or PlayerPedId(), ignore or 4)
     local retval, hit, endCoords, surfaceNormal, material, entityHit = 1, nil, nil, nil, nil, nil
     
     local timeout = 500
@@ -82,7 +84,7 @@ end
 ---@param flags ShapetestFlags? Defaults to 511.
 ---@param ignore ShapetestIgnore? Defaults to 4.
 ---@param ignoreEntity number? Defaults to playerPed.
-Raycast.FromCamera = function(distance, flags, ignore, ignoreEntity)
+Raycast.fromCamera = function(distance, flags, ignore, ignoreEntity)
     if distance ~= nil and type(distance) ~= 'number' then
         error(('Expected distance to have type "number" (received %s)'):format(type(distance)))
     end
@@ -90,7 +92,7 @@ Raycast.FromCamera = function(distance, flags, ignore, ignoreEntity)
     distance = distance or 10
     local coords = GetFinalRenderedCamCoord()
     local destination = coords + getForwardVector() * distance
-    return Raycast.FromCoords(coords, destination, flags, ignore, ignoreEntity)
+    return Raycast.fromCoords(coords, destination, flags, ignore, ignoreEntity)
 end
 
 return Raycast

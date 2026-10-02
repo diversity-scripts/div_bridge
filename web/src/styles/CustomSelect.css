@@ -1,0 +1,158 @@
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-container.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.custom-select-trigger {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0 14px;
+  height: 44px;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-select-trigger.open {
+  border-color: rgba(var(--brand-rgb), 0.5);
+  box-shadow: 0 0 0 2px rgba(var(--brand-rgb), 0.1);
+}
+
+.select-value.placeholder {
+  color: #5c5f66;
+}
+
+.select-arrow {
+  transition: transform 0.2s;
+  color: #7a7d82;
+  font-size: 16px;
+}
+
+.select-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.custom-select-options {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(var(--default-rgb), 0.05), transparent 50%),
+    linear-gradient(180deg, rgb(35, 36, 39), rgb(28, 29, 31));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  margin-top: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.custom-select-search-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 8px;
+}
+
+.custom-select-search-wrapper .search-icon {
+  color: #7a7d82;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.custom-select-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  width: 100%;
+}
+
+.custom-select-search-input::placeholder {
+  color: #5c5f66;
+}
+
+.custom-select-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.custom-select-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-select-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.custom-option {
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: #c8c9cc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.custom-option:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.custom-option.selected {
+  font-weight: 600;
+}
+
+.custom-option.no-results {
+  color: #5c5f66;
+  cursor: default;
+  justify-content: center;
+}
+
+.option-check {
+  font-size: 14px;
+  color: var(--brand);
+}
+
+.option-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.option-checkbox.checked {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.option-label {
+  flex: 1;
+}

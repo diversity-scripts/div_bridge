@@ -131,14 +131,14 @@ end
 
 ---This will return the players group
 ---@param source number
----@return string | table | nil
+---@return table | string | nil
 Framework.GetPlayerGroup = function(source)
     local perms = QBCore.Functions.GetPermission(source)
     if type(perms) == 'table' then
         local groups = {}
         for group, hasAccess in pairs(perms) do
             if hasAccess then
-                groups[#groups+1] = group
+                groups[#groups + 1] = group
             end
         end
         return groups

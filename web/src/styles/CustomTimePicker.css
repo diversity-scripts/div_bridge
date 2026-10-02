@@ -1,0 +1,126 @@
+.custom-timepicker-container {
+  position: relative;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+
+.custom-timepicker-container.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.custom-timepicker-trigger {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.custom-timepicker-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.custom-timepicker-trigger.open {
+  border-color: rgba(var(--brand-rgb), 0.5);
+  box-shadow: 0 0 0 2px rgba(var(--brand-rgb), 0.1);
+}
+
+.timepicker-value {
+  color: #fff;
+}
+
+.timepicker-value.placeholder {
+  color: #5c5f66;
+}
+
+.timepicker-icon {
+  color: var(--brand);
+}
+
+.custom-timepicker-popup {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(var(--brand-rgb), 0.04), transparent 50%),
+    linear-gradient(180deg, rgb(35, 36, 39), rgb(28, 29, 31));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  height: 280px;
+}
+
+.timepicker-columns {
+  display: flex;
+  height: 100%;
+  font-family: var(--font-sans);
+  width: 100%;
+}
+
+.timepicker-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.column-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.column-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.column-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.column-label {
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7a7d82;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.15);
+  font-family: var(--font-sans);
+}
+
+.time-item {
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #c8c9cc;
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+  margin: 1px 0;
+}
+
+.time-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.time-item.selected {
+  background: var(--brand);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(var(--brand-rgb), 0.3);
+}

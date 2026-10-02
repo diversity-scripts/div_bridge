@@ -147,4 +147,30 @@ Framework.GetPlayerInventory = function()
     return {}
 end
 
+-- [[ Event Related ]] --
+-- This section is used to trigger events for the bridge, these should be triggered in the appropriate places within the framework, such as player loaded, job update, etc.
+-- If the framework does not have an event for something, please trigger it in the appropriate place and add it to the list below.
+
+---Event handler for when player is loaded in
+RegisterNetEvent('playerLoaded', function()
+    Wait(1500)
+    TriggerEvent('div_bridge:client:OnPlayerLoaded')
+end)
+
+---Event handler for when player logs out
+RegisterNetEvent('playerLogout', function()
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
+end)
+
+---Event handler for when player disconnects from the server
+RegisterNetEvent('playerDropped', function()
+    TriggerEvent('div_bridge:client:OnPlayerUnloaded')
+end)
+
+---Event handler for when player job is updated
+---@param data table
+RegisterNetEvent('setJob', function(data)
+    TriggerEvent('div_bridge:client:OnPlayerJobUpdate', { name = data.name, label = data.label, grade = data.grade, gradeLabel = data.grade_label })
+end)
+
 return Framework

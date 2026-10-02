@@ -9,7 +9,7 @@ local function getFramework()
     if GetResourceState('ox_core') == 'started' then return 'ox_core' end
     if GetResourceState('ND_Core') == 'started' then return 'nd_core' end
     if GetResourceState('core') == 'started' then return 'tmc' end
-    return 'none'
+    return 'standalone'
 end
 
 local function getInventory(framework)
@@ -41,28 +41,6 @@ local function getInteraction()
     return 'none'
 end
 
-local function getNotification(framework)
-    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
-    if GetResourceState('okokNotify') == 'started' then return 'okokNotify' end
-    if GetResourceState('mythic_notify') == 'started' then return 'mythic_notify' end
-    if GetResourceState('pNotify') == 'started' then return 'pNotify' end
-    if GetResourceState('17mov_Hud') == 'started' then return '17mov_Hud' end
-    if GetResourceState('codem-notification') == 'started' then return 'codem-notification' end
-    if framework ~= 'none' and framework ~= 'custom' then return 'framework' end
-    return 'standalone'
-end
-
-local function getTextUI(framework)
-    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
-    if GetResourceState('jg-textui') == 'started' then return 'jg-textui' end
-    if GetResourceState('okokTextUI') == 'started' then return 'okokTextUI' end
-    if GetResourceState('cd_drawtextui') == 'started' then return 'cd_drawtextui' end
-    if GetResourceState('codem-textui') == 'started' then return 'codem-textui' end
-    if GetResourceState('brutal_textui') == 'started' then return 'brutal_textui' end
-    if framework ~= 'none' and framework ~= 'custom' then return 'framework' end
-    return 'standalone'
-end
-
 local function getBank(framework)
     if GetResourceState('ox_banking') == 'started' then return 'ox_banking' end
     if GetResourceState('qb-banking') == 'started' then return 'qb-banking' end
@@ -76,13 +54,70 @@ local function getBank(framework)
     return 'none'
 end
 
+local function getNotification(framework)
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    if GetResourceState('okokNotify') == 'started' then return 'okokNotify' end
+    if GetResourceState('mythic_notify') == 'started' then return 'mythic_notify' end
+    if GetResourceState('pNotify') == 'started' then return 'pNotify' end
+    if GetResourceState('17mov_Hud') == 'started' then return '17mov_Hud' end
+    if GetResourceState('codem-notification') == 'started' then return 'codem-notification' end
+    if framework ~= 'none' and framework ~= 'custom' then return 'framework' end
+    return 'internal'
+end
+
+local function getTextUI(framework)
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    if GetResourceState('jg-textui') == 'started' then return 'jg-textui' end
+    if GetResourceState('okokTextUI') == 'started' then return 'okokTextUI' end
+    if GetResourceState('cd_drawtextui') == 'started' then return 'cd_drawtextui' end
+    if GetResourceState('codem-textui') == 'started' then return 'codem-textui' end
+    if GetResourceState('brutal_textui') == 'started' then return 'brutal_textui' end
+    if framework ~= 'none' and framework ~= 'custom' then return 'framework' end
+    return 'internal'
+end
+
+local function getProgressBar()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    return 'internal'
+end
+
+local function getContextMenu()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    return 'internal'
+end
+
+local function getInputDialog()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    return 'internal'
+end
+
+local function getAlertDialog()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    return 'internal'
+end
+
+local function getSkillCheck()
+    if GetResourceState('ox_lib') == 'started' then return 'ox_lib' end
+    return 'internal'
+end
+
 return function(Config)
     if Config.Framework == 'auto' then Config.Framework = getFramework() end
     if Config.Inventory == 'auto' then Config.Inventory = getInventory(Config.Framework) end
     if Config.Database == 'auto' then Config.Database = getDatabase() end
     if Config.Interaction == 'auto' then Config.Interaction = getInteraction() end
-    if Config.Notification == 'auto' then Config.Notification = getNotification(Config.Framework) end
-    if Config.TextUI == 'auto' then Config.TextUI = getTextUI(Config.Framework) end
     if Config.Banking == 'auto' then Config.Banking = getBank(Config.Framework) end
+
+    -- UI sub-component auto-detection
+    if type(Config.UI) == 'table' then
+        if Config.UI.Notification == 'auto' then Config.UI.Notification = getNotification(Config.Framework) end
+        if Config.UI.TextUI == 'auto' then Config.UI.TextUI = getTextUI(Config.Framework) end
+        if Config.UI.ProgressBar == 'auto' then Config.UI.ProgressBar = getProgressBar() end
+        if Config.UI.ContextMenu == 'auto' then Config.UI.ContextMenu = getContextMenu() end
+        if Config.UI.InputDialog == 'auto' then Config.UI.InputDialog = getInputDialog() end
+        if Config.UI.AlertDialog == 'auto' then Config.UI.AlertDialog = getAlertDialog() end
+        if Config.UI.SkillCheck == 'auto' then Config.UI.SkillCheck = getSkillCheck() end
+    end
+
     return Config
 end

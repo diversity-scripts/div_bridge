@@ -9,7 +9,7 @@ end
 ---@param itemName string Item name
 ---@return number
 Inventory.GetItemCount = function(itemName)
-    Bridge.debugPrint('Checking item count for:', itemName)
+    dBridge.debugPrint('Checking item count for:', itemName)
     local inventory = codem_inventory:getUserInventory() or {}
     local count = 0
     for _, item in pairs(inventory) do
@@ -17,7 +17,7 @@ Inventory.GetItemCount = function(itemName)
             count = count + (item.amount or item.count or 1)
         end
     end
-    Bridge.debugPrint('Found count for', itemName, ':', count)
+    dBridge.debugPrint('Found count for', itemName, ':', count)
     return count
 end
 

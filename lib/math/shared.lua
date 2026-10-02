@@ -1,3 +1,13 @@
+--[[
+    Adapted from ox_lib (https://github.com/overextended/ox_lib)
+    This file is licensed under LGPL-3.0 or higher <https://www.gnu.org/licenses/lgpl-3.0.en.html>
+    Copyright © 2025 Linden <https://github.com/thelindat>
+
+    Adapted for div_bridge: returns a namespaced Math module (dLib.math) with
+    lowercase-first methods, rather than extending the global math library.
+    Adds extra helpers (distance/length/deg-rad/sign/etc.) not in ox_lib.
+]]
+
 local Math = {}
 
 local function interpolateTable(start, finish, factor)
@@ -15,7 +25,7 @@ end
 ---@param value number | string The number to round
 ---@param places? number | string The number of decimal places to round to (optional)
 ---@return number
-Math.Round = function(value, places)
+Math.round = function(value, places)
     if type(value) == 'string' then value = tonumber(value) end
     if type(value) ~= 'number' then error('Value must be a number') end
 
@@ -37,7 +47,7 @@ end
 ---@param min number | string The minimum value
 ---@param max number | string The maximum value
 ---@return number
-Math.Clamp = function(value, min, max)  -- credit https://love2d.org/forums/viewtopic.php?t=1856
+Math.clamp = function(value, min, max)  -- credit https://love2d.org/forums/viewtopic.php?t=1856
     if type(value) == 'string' then value = tonumber(value) end
     if type(min) == 'string' then min = tonumber(min) end
     if type(max) == 'string' then max = tonumber(max) end
@@ -54,8 +64,8 @@ end
 ---@param n number | string The number to convert
 ---@param upper? boolean Whether to use uppercase letters
 ---@return string
-Math.ToHex = function(n, upper)
-    if type(n) == 'number' then n = tonumber(n) end
+Math.toHex = function(n, upper)
+    if type(n) == 'string' then n = tonumber(n) end
     if type(n) ~= 'number' then error('Value must be a number') end
     local formatString = ('0x%s'):format(upper and '%X' or '%x')
     return formatString:format(n)
@@ -66,10 +76,23 @@ end
 ---@return number r The red value (0-255)
 ---@return number g The green value (0-255)
 ---@return number b The blue value (0-255)
-Math.HexToRGB = function(input)
+Math.hexToRGB = function(input)
     if type(input) ~= 'string' then error('Value must be a string') end
-    local r, g, b = string.match(input, '([^#]+.)(..)(..)')
-    return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16)
+    local s = input:gsub('#', '')
+    if #s == 3 then
+        -- shorthand #abc -> #aabbcc
+        local r = tonumber(s:sub(1, 1) .. s:sub(1, 1), 16)
+        local g = tonumber(s:sub(2, 2) .. s:sub(2, 2), 16)
+        local b = tonumber(s:sub(3, 3) .. s:sub(3, 3), 16)
+        return r, g, b
+    elseif #s == 6 then
+        local r = tonumber(s:sub(1, 2), 16)
+        local g = tonumber(s:sub(3, 4), 16)
+        local b = tonumber(s:sub(5, 6), 16)
+        return r, g, b
+    else
+        error('Invalid hex color')
+    end
 end
 
 ---Converts a hex string to RGBA values
@@ -78,7 +101,7 @@ end
 ---@return number g The green value (0-255)
 ---@return number b The blue value (0-255)
 ---@return number a The alpha value (0-255)
-Math.HexToRGBA = function(input)
+Math.hexToRGBA = function(input)
     if type(input) ~= 'string' then error('Value must be a string') end
     local s = input:gsub('#', ''):upper()
     if #s == 3 then
@@ -111,7 +134,7 @@ end
 ---Converts a normalized vector3 to a rotation vector
 ---@param input vector3 The normalized vector3 to convert
 ---@return vector3 The rotation vector
-Math.NormalToRotation = function(input)
+Math.normalToRotation = function(input)
     local inputType = type(input)
 
     if inputType == 'vector3' then
@@ -129,11 +152,11 @@ end
 ---@param max? number The maximum value
 ---@param round? boolean Whether to round the values
 ---@return vector3 The vector3
-Math.ToVector = function(input, min, max, round)
+Math.toVector = function(input, min, max, round)
     local inputType = type(input)
 
     if inputType == 'string' then
-        local a, b, c, d = Math.ToScalars(input, min, max, round)
+        local a, b, c, d = Math.toScalars(input, min, max, round)
         if d ~= nil and type(vector4) == 'function' then
             return vector4(a, b, c, d)
         elseif c ~= nil and type(vector3) == 'function' then
@@ -147,7 +170,7 @@ Math.ToVector = function(input, min, max, round)
 
     if inputType == 'table' then
         for _, v in pairs(input) do
-            Math.ParseNumber(v, min, max, round)
+            Math.parseNumber(v, min, max, round)
         end
 
         local len = #input
@@ -178,12 +201,12 @@ end
 ---@param max? number The maximum value
 ---@param round? boolean Whether to round the values
 ---@return number ... The numbers
-Math.ToScalars = function(input, min, max, round)
+Math.toScalars = function(input, min, max, round)
     local arr = {}
     local i = 0
 
     for s in tostring(input):gmatch('[^,%s]+') do
-        local n = Math.ParseNumber(s, min, max, round and (round == true or i < round))
+        local n = Math.parseNumber(s, min, max, round and (round == true or i < round))
         i = i + 1
         arr[i] = n
     end
@@ -197,7 +220,7 @@ end
 ---@param max? number The maximum value
 ---@param round? boolean Whether to round the value
 ---@return number
-Math.ParseNumber = function(input, min, max, round)
+Math.parseNumber = function(input, min, max, round)
     local n = tonumber(input)
 
     if not n then
@@ -223,7 +246,7 @@ end
 ---@param finish T -- The ending value of the interpolation.
 ---@param duration number -- The duration over which to interpolate over in milliseconds.
 ---@return fun(): T, number
-Math.Lerp = function(start, finish, duration)
+Math.lerp = function(start, finish, duration)
     local startTime = GetGameTimer()
     local typeStart = type(start)
     local typeFinish = type(finish)
@@ -261,7 +284,7 @@ end
 ---@param finish number | table | vector2 | vector3 | vector4 -- The ending value of the interpolation.
 ---@param value number | table | vector2 | vector3 | vector4 -- The value to calculate the inverse of.
 ---@return number
-Math.InverseLerp = function(start, finish, value)
+Math.inverseLerp = function(start, finish, value)
     if type(start) == 'string' then start = tonumber(start) end
     if type(finish) == 'string' then finish = tonumber(finish) end
     if type(value) == 'string' then value = tonumber(value) end
@@ -279,7 +302,7 @@ end
 ---@param outMin number | table | vector2 | vector3 | vector4 -- The minimum value of the output range.
 ---@param outMax number | table | vector2 | vector3 | vector4 -- The maximum value of the output range.
 ---@return number | table | vector2 | vector3 | vector4
-Math.Map = function(value, inMin, inMax, outMin, outMax)
+Math.map = function(value, inMin, inMax, outMin, outMax)
     if type(value) == 'string' then value = tonumber(value) end
     if type(inMin) == 'string' then inMin = tonumber(inMin) end
     if type(inMax) == 'string' then inMax = tonumber(inMax) end
@@ -290,14 +313,14 @@ Math.Map = function(value, inMin, inMax, outMin, outMax)
     if type(inMax) ~= 'number' then error('Value must be a number') end
     if type(outMin) ~= 'number' then error('Value must be a number') end
     if type(outMax) ~= 'number' then error('Value must be a number') end
-    local t = Math.InverseLerp(inMin, inMax, value)
-    return Math.Lerp(outMin, outMax, t)
+    local t = Math.inverseLerp(inMin, inMax, value)
+    return Math.lerp(outMin, outMax, t)
 end
 
 ---Converts degrees to radians.
 ---@param deg number -- The angle in degrees.
 ---@return number
-Math.Deg2Rad = function(deg)
+Math.deg2Rad = function(deg)
     if type(deg) == 'string' then deg = tonumber(deg) end
     if type(deg) ~= 'number' then error('Value must be a number') end
     return deg * math.pi / 180
@@ -306,7 +329,7 @@ end
 ---Converts radians to degrees.
 ---@param rad number -- The angle in radians.
 ---@return number
-Math.Rad2Deg = function(rad)
+Math.rad2Deg = function(rad)
     if type(rad) == 'string' then rad = tonumber(rad) end
     if type(rad) ~= 'number' then error('Value must be a number') end
     return rad * 180 / math.pi
@@ -315,7 +338,7 @@ end
 ---Returns the sign of a number.
 ---@param x number -- The number to get the sign of.
 ---@return number
-Math.Sign = function(x)
+Math.sign = function(x)
     if type(x) == 'string' then x = tonumber(x) end
     if type(x) ~= 'number' then error('Value must be a number') end
     if x > 0 then return 1 end
@@ -328,7 +351,7 @@ end
 ---@param b number -- The second number.
 ---@param eps number | nil -- The epsilon value to use for comparison. Defaults to 1e-6.
 ---@return boolean
-Math.AlmostEqual = function(a, b, eps)
+Math.almostEqual = function(a, b, eps)
     if type(a) == 'string' then a = tonumber(a) end
     if type(b) == 'string' then b = tonumber(b) end
     if eps ~= nil and type(eps) == 'string' then eps = tonumber(eps) end
@@ -343,7 +366,7 @@ end
 ---@param x number -- The x component of the vector.
 ---@param y number -- The y component of the vector.
 ---@return number
-Math.Length2 = function(x, y)
+Math.length2 = function(x, y)
     if type(x) == 'string' then x = tonumber(x) end
     if type(y) == 'string' then y = tonumber(y) end
     if type(x) ~= 'number' then error('Value must be a number') end
@@ -356,7 +379,7 @@ end
 ---@param y number -- The y component of the vector.
 ---@param z number -- The z component of the vector.
 ---@return number
-Math.Length3 = function(x, y, z)
+Math.length3 = function(x, y, z)
     if type(x) == 'string' then x = tonumber(x) end
     if type(y) == 'string' then y = tonumber(y) end
     if type(z) == 'string' then z = tonumber(z) end
@@ -372,7 +395,7 @@ end
 ---@param x2 number -- The x component of the second point.
 ---@param y2 number -- The y component of the second point.
 ---@return number
-Math.Distance2D = function(x1, y1, x2, y2)
+Math.distance2D = function(x1, y1, x2, y2)
     if type(x1) == 'string' then x1 = tonumber(x1) end
     if type(y1) == 'string' then y1 = tonumber(y1) end
     if type(x2) == 'string' then x2 = tonumber(x2) end
@@ -394,7 +417,7 @@ end
 ---@param y2 number -- The y component of the second point.
 ---@param z2 number -- The z component of the second point.
 ---@return number
-Math.Distance3D = function(x1, y1, z1, x2, y2, z2)
+Math.distance3D = function(x1, y1, z1, x2, y2, z2)
     if type(x1) == 'string' then x1 = tonumber(x1) end
     if type(y1) == 'string' then y1 = tonumber(y1) end
     if type(z1) == 'string' then z1 = tonumber(z1) end

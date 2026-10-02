@@ -37,15 +37,15 @@ Inventory.CanCarryItem = function(source, itemName, itemCount, metadata)
 end
 
 ---@param source number Source player ID
----@param items string | string[] Item names
+---@param itemName string Item name
 ---@return number
-Inventory.GetItemCount = function(source, items)
+Inventory.GetItemCount = function(source, itemName)
     local player = QBCore.Functions.GetPlayer(source)
-    local items = player?.PlayerData?.items or {}
-    local slot = ps_inventory:GetFirstSlotByItem(items, itemName)
-    if not slot then return {} end
+    local playerItems = player?.PlayerData?.items or {}
+    local slot = ps_inventory:GetFirstSlotByItem(playerItems, itemName)
+    if not slot then return 0 end
 
-    return items[slot]?.amount or 0
+    return playerItems[slot]?.amount or 0
 end
 
 ---@param source number Source player ID

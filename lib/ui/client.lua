@@ -6,7 +6,7 @@ local UI = {}
 ---@param scale? number
 ---@param color? table
 ---@param font? number
-UI.Draw2DText = function(text, x, y, scale, color, font)
+UI.draw2DText = function(text, x, y, scale, color, font)
     if not text or not x or not y or not scale then
         return error('DrawText requires text, x, y, and scale options.')
     end
@@ -34,7 +34,7 @@ end
 ---@param scale? number
 ---@param color? table
 ---@param font? number
-UI.Draw3DText = function(text, coords, scale, color, font)
+UI.draw3DText = function(text, coords, scale, color, font)
     if not coords or not text then
         return error('Draw3DText requires coords and text options.')
     end
@@ -64,7 +64,7 @@ end
 ---@param width number
 ---@param height number
 ---@param color? table
-UI.DrawRect = function(x, y, width, height, color)
+UI.drawRect = function(x, y, width, height, color)
     if not x or not y or not width or not height then
         return error('DrawRect requires x, y, width, and height options.')
     end

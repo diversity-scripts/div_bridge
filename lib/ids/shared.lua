@@ -26,7 +26,7 @@ end
 ---@param len? number | nil Defaults to 8 (optional)
 ---@param pattern? string | nil Defaults to alphanumeric (optional)
 ---@return string
-Ids.CreateUniqueId = function(tbl, len, pattern)
+Ids.createUniqueId = function(tbl, len, pattern)
     if tbl ~= nil and type(tbl) ~= 'table' then
         error(('Expected tbl to have type "table" (received %s)'):format(type(tbl)))
     end

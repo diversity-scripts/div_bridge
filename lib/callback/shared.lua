@@ -18,8 +18,6 @@ local function handleResponse(registry, callbackId, ...)
     local data = registry[callbackId]
     if not data then return end
 
-    if data.timer then math.randomseed(GetGameTimer()) end
-
     local args = {...}
 
     if data.callback then
@@ -71,17 +69,19 @@ end
 
 -- SERVER SIDE
 if IsDuplicityVersion() then
-    function Callback.RegisterServer(name, handler)
+    local ServerCallbacks = {}
+
+    function Callback.registerServer(name, handler)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end
         if type(handler) ~= 'function' then
             error(('Expected handler to have type "function" (received %s)'):format(type(handler)))
         end
-        Callback[name] = handler
+        ServerCallbacks[name] = handler
     end
 
-    function Callback.TriggerClient(name, target, ...)
+    function Callback.triggerClient(name, target, ...)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end
@@ -106,7 +106,7 @@ if IsDuplicityVersion() then
     end
 
     -- Await a response from a specific client and return the values (yields current coroutine)
-    function Callback.AwaitClient(name, target, ...)
+    function Callback.awaitClient(name, target, ...)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end
@@ -120,7 +120,7 @@ if IsDuplicityVersion() then
 
     RegisterNetEvent(EVENT_NAMES.CLIENT_TO_SERVER, function(name, callbackId, ...)
         local src = source
-        local handler = Callback[name]
+        local handler = ServerCallbacks[name]
         if not handler then 
             return print(string.format("^1[div_bridge] Unknown server callback: %s^0", name)) 
         end
@@ -143,7 +143,7 @@ if IsDuplicityVersion() then
 else -- CLIENT SIDE
     local ClientCallbacks = {}
 
-    function Callback.RegisterClient(name, handler)
+    function Callback.registerClient(name, handler)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end
@@ -153,7 +153,7 @@ else -- CLIENT SIDE
         ClientCallbacks[name] = handler
     end
 
-    function Callback.TriggerServer(name, ...)
+    function Callback.triggerServer(name, ...)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end
@@ -175,7 +175,7 @@ else -- CLIENT SIDE
     end
 
     -- Await a response from the server and return the values (yields current coroutine)
-    function Callback.AwaitServer(name, ...)
+    function Callback.awaitServer(name, ...)
         if type(name) ~= 'string' then
             error(('Expected name to have type "string" (received %s)'):format(type(name)))
         end

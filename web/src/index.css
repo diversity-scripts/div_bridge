@@ -1,0 +1,13 @@
+html, body, #root {
+  background-color: transparent !important;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  pointer-events: none;
+}

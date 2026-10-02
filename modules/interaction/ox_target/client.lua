@@ -53,8 +53,9 @@ Interaction.FixOptions = function(options)
             v.onSelect = select
         end
         v.groups = v.job or v.groups
-        v.canInteract = v.canInteract and function(...)
-            return v.canInteract(...)
+        local originalCanInteract = v.canInteract
+        v.canInteract = originalCanInteract and function(...)
+            return originalCanInteract(...)
         end
     end
     return options

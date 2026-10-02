@@ -1,4 +1,8 @@
-Lib = _G.dLib or {}
+local Lib = _ENV.dLib or {}
+-- Expose immediately in the loading environment (the consumer's globals when
+-- lib/init.lua is loaded via load() without a custom _ENV) so lib module files
+-- can reference dLib.* while loading.
+_ENV.dLib = Lib
 
 if not _VERSION:find('5.4') then
     error('^1Lua 5.4 must be enabled in the resource manifest!^0', 2)
@@ -16,9 +20,9 @@ local function loadLibModule(moduleName)
     local chunk, finalPath
 
     local paths = {
-        ('lib/%s/%s.lua'):format(moduleName, context), -- lib/math/client.lua
-        ('lib/%s/shared.lua'):format(moduleName),      -- lib/math/shared.lua
-        ('lib/%s.lua'):format(moduleName)              -- lib/math.lua (fallback)
+        ('lib/%s/%s.lua'):format(moduleName, context), -- lib/requestModel/client.lua
+        ('lib/%s/shared.lua'):format(moduleName),      -- lib/table/shared.lua
+        ('lib/%s.lua'):format(moduleName)              -- lib/requestModel.lua (fallback)
     }
 
     for _, path in ipairs(paths) do
@@ -40,38 +44,39 @@ local function loadLibModule(moduleName)
     return fn()
 end
 
-local function initialize()
-    Lib.config = Lib.config or {}
-    local configContent = LoadResourceFile(bridgeResName, 'config.lua')
-    local configFn = configContent and load(configContent, '@@config.lua')
-    Lib.config = configFn and configFn() or {}
+local function loadConfig(existing)
+    local chunk = LoadResourceFile(bridgeResName, 'lib/loadConfig.lua')
+    local fn = chunk and load(chunk, '@@div_bridge/lib/loadConfig.lua')
+    return fn and fn()(existing) or existing or {}
+end
 
-    local detectContent = LoadResourceFile(bridgeResName, 'detection.lua')
-    local detectFn = detectContent and load(detectContent, '@@detection.lua')
-    if detectFn then
-        Lib.config = detectFn()(Lib.config) or Lib.config
-    end
+local function initialize()
+    Lib.config = loadConfig(Lib.config)
+
+    -- Set name/context so the double-load guard above is effective, mirroring
+    -- init.lua (Bridge). Uses the loading resource's name, so external consumers
+    -- get their own name and only a true re-load within div_bridge trips it.
+    Lib.name = GetCurrentResourceName()
+    Lib.context = context
 end
 
 initialize()
 
+-- ox_lib-style resolution: each key maps 1:1 to a module folder under lib/.
+-- The module's returned value is stored directly on dLib:
+--   * returns a function -> dLib.requestModel(...) is callable directly
+--   * returns a table    -> dLib.table.contains(...) is a namespace
+-- Module keys are lowercase-first (dLib.math, dLib.requestModel), matching the
+-- ox_lib convention. No flattening and no cross-module scanning. Unknown keys nil.
 setmetatable(Lib, {
     __index = function(self, key)
-        local lower = tostring(key):lower()
-        local existing = rawget(self, lower)
-        if existing ~= nil then
-            rawset(self, key, existing)
-            return existing
-        end
-        local module = loadLibModule(lower)
-        if module then
-            rawset(self, lower, module)
-            rawset(self, key, module)
-            return module
-        end
-
-        return nil
+        local module = loadLibModule(key)
+        rawset(self, key, module)
+        return module
     end
 })
 
-_G.dLib = Lib
+-- NOTE: we deliberately do NOT publish bare `cache` or `require` globals.
+-- ox_lib owns those names (_ENV.cache / _ENV.require) when loaded, and clobbering
+-- them risks breaking modules that rely on them (e.g. ox_core's
+-- `require '@ox_core/lib/init'`). Use dLib.cache and dLib.require instead.

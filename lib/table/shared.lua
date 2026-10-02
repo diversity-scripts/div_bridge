@@ -1,15 +1,21 @@
+--[[
+    Adapted from ox_lib (https://github.com/overextended/ox_lib)
+    This file is licensed under LGPL-3.0 or higher <https://www.gnu.org/licenses/lgpl-3.0.en.html>
+    Copyright © 2025 Linden <https://github.com/thelindat>
+
+    Adapted for div_bridge: returns a namespaced Table module (dLib.table) with
+    lowercase-first methods, rather than extending the global table library.
+]]
+
 local Table = {}
 
 ---Checks if a table contains a value
 ---@param t table The table to check
 ---@param value any The value to check for
 ---@return boolean
-Table.Contains = function(tbl, value)
+Table.contains = function(tbl, value)
     if type(tbl) ~= 'table' then return error('Value must be a table') end
     if type(value) ~= 'table' then
-        if rawget(tbl, value) ~= nil then
-            return tbl[value] ~= nil and tbl[value] ~= false
-        end
         for _, v in pairs(tbl) do
             if v == value then
                 return true
@@ -52,7 +58,7 @@ end
 ---@param tbl1 table The first table to check
 ---@param tbl2 table The second table to check
 ---@return boolean
-Table.Matches = function(tbl1, tbl2)
+Table.matches = function(tbl1, tbl2)
     if type(tbl1) ~= 'table' then return error('Value must be a table') end
     if type(tbl2) ~= 'table' then return error('Value must be a table') end
 
@@ -128,15 +134,15 @@ local function tableMerge(tbl1, tbl2, override)
     return tbl1
 end
 
-Table.Merge = tableMerge
-Table.DeepClone = deepClone
+Table.merge = tableMerge
+Table.deepClone = deepClone
 
 ---Shuffles the elements of a table
 ---@param tbl table The table to shuffle
 ---@param copy? boolean Whether to create a copy of the table before shuffling
 ---@param rnd? function The random function to use for shuffling
 ---@return table
-Table.Shuffle = function(tbl, copy, rnd)
+Table.shuffle = function(tbl, copy, rnd)
     if type(tbl) ~= 'table' then return error('Value must be a table') end
 
     local rng = rnd or math.random
@@ -161,7 +167,7 @@ end
 ---@param tbl table The table to map
 ---@param cb function(value: any, key: any): any The callback function to map the elements
 ---@return table
-Table.Map = function(tbl, cb)
+Table.map = function(tbl, cb)
     if type(tbl) ~= 'table' then return error('Value must be a table') end
     if type(cb) ~= 'function' then return error('Callback must be a function') end
 
@@ -176,7 +182,7 @@ end
 ---Counts the number of elements in a table
 ---@param tbl table The table to count
 ---@return number
-Table.Count = function(tbl)
+Table.count = function(tbl)
     if type(tbl) ~= 'table' then return error('Value must be a table') end
 
     local count = 0

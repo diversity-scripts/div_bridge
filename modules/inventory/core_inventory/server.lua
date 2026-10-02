@@ -38,10 +38,10 @@ Inventory.RemoveItem = function(source, itemName, itemCount, metadata, slot)
     end
 
     if slot then
-        local identifier = Bridge.Framework:GetPlayerIdentifier(source)
+        local identifier = dBridge.Framework:GetPlayerIdentifier(source)
         if not identifier then return false end
 
-        local framework = Bridge.Framework:GetFrameworkName()
+        local framework = dBridge.Framework:GetResourceName()
         if framework == 'es_extended' then
             identifier = string.gsub(identifier, ':', '')
         end

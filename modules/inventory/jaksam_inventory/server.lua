@@ -52,6 +52,22 @@ Inventory.HasItem = function(source, itemName, itemCount)
 end
 
 ---@param source number Source player ID
+---@param itemName string Item name
+---@param metadata? table Item info (optional)
+---@return table
+Inventory.GetItemByName = function(source, itemName, metadata)
+    return jaksam_inventory:getItemByName(source, itemName, metadata or nil, false) or {}
+end
+
+---@param inventory string | number Inventory ID
+---@param slot number Item slot
+---@param metadata? table Item info (unused)
+---@return table {weight, name, metadata, slot, label, count}
+Inventory.GetItemBySlot = function(inventory, slot, metadata)
+    return jaksam_inventory:getItemFromSlot(inventory, slot) or {}
+end
+
+---@param source number Source player ID
 ---@return table
 Inventory.GetPlayerInventory = function(source)
     return jaksam_inventory:getInventory(source) or {}

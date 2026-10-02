@@ -1,4 +1,4 @@
-Bridge.loadOxLib()
+dBridge.loadOxLib()
 local NDCore = exports['ND_Core']
 local Framework = {}
 

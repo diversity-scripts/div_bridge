@@ -1,4 +1,4 @@
-Bridge.loadOxLib()
+dBridge.loadOxLib()
 local Ox = require '@ox_core/lib/init'
 local Framework = {}
 

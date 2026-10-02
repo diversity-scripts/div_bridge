@@ -1,14 +1,6 @@
 local Inventory = {}
 
-local function getFramework()
-    local framework = Bridge.Framework
-    if type(framework) ~= 'table' then
-        error('Inventory: Bridge.Framework failed to load or is invalid. Please check your config.')
-    end
-    return framework
-end
-
-local framework = getFramework()
+local framework = dBridge.getFramework('Inventory')
 
 ---@return string
 function Inventory.GetResourceName()
