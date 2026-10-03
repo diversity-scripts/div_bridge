@@ -45,17 +45,17 @@ Config.Banking = 'auto'
 ------------------------
 Config.UI = {
     -- none | auto | internal | framework | ox_lib | okokNotify | mythic_notify | pNotify | 17mov_Hud | codem-notification | custom
-    Notification = 'internal',
+    Notification = 'auto',
     -- none | auto | internal | framework | ox_lib | jg-textui | okokTextUI | cd_drawtextui | codem-textui | brutal_textui | custom
-    TextUI = 'internal',
+    TextUI = 'auto',
     -- none | auto | internal | ox_lib | custom
-    ProgressBar = 'internal',
+    ProgressBar = 'auto',
+    -- none | auto | auto | ox_lib | custom
+    SkillCheck = 'auto',
     -- none | auto | internal | ox_lib | custom
-    SkillCheck = 'internal',
+    ContextMenu = 'auto',
     -- none | auto | internal | ox_lib | custom
-    ContextMenu = 'internal',
-    -- none | auto | internal | ox_lib | custom
-    InputDialog = 'internal',
+    InputDialog = 'auto',
     -- none | auto | internal | ox_lib | custom
     AlertDialog = 'internal',
     -- internal only (no external adapters exist)
